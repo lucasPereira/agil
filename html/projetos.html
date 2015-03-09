@@ -1,0 +1,26 @@
+<div class="alert alert-warning" ng-if="erroDeResposta"><p>Ocorreu uma resposta inesperada do servidor, foi mau ae.</p></div>
+
+<form class="navbar-form navbar-right" novalidate>
+	<div class="form-group">
+		<label for="busca" class="sr-only">Busca</label>
+		<div class="input-group">
+			<div class="input-group-addon"><span class="glyphicon glyphicon-search"></span></div>
+			<input type="text" name="busca" class="form-control" ng-model="busca" />
+		</div>
+	</div>
+</form>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>Projeto</th>
+			<th>Última atualização</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="projeto in projetos | filter: busca | orderBy: '-ultimaAtualizacao'">
+			<td><a href="/#/projeto/{{projeto._id}}">{{projeto.nome}}</a></td>
+			<td><time datetime="{{projeto.ultimaAtualizacao">{{projeto.ultimaAtualizacao | date: 'dd/MM/y hh:mm'}}</time></td>
+		</tr>
+	</tbody>
+</table>

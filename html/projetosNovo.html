@@ -1,0 +1,18 @@
+<div class="alert alert-success" ng-if="sucesso"><p>Projeto <a href="{{projeto.uri}}">{{projeto.nome}}</a> criado com sucesso.</p></div>
+<div class="alert alert-danger" ng-if="erroDoCliente400"><p>Ocorreu um erro ao criar o projeto. Certifique-se que os campos foram preenchidos corretamente.</p></div>
+<div class="alert alert-danger" ng-if="erroDoCliente409"><p>Ocorreu um erro ao criar o projeto. Certifique-se que já não existe um projeto com esse nome.</p></div>
+<div class="alert alert-warning" ng-if="erroDoServidor"><p>Ocorreu um erro no servidor, foi mau ae.</p></div>
+<div class="alert alert-warning" ng-if="erroDeResposta"><p>Ocorreu uma resposta inesperada do servidor, foi mau ae.</p></div>
+
+<form ng-submit="criar()" name="projetoFormulario" novalidate>
+	<div class="form-group" ng-class="{'has-error': projetoFormulario.$invalid && projetoFormulario.$dirty, 'has-success': !projetoFormulario.$invalid && projetoFormulario.$dirty}">
+		<label for="nome">Nome</label>
+		<div class="input-group">
+			<div class="input-group-addon">/projetos/</div>
+			<input type="text" class="form-control" ng-model="projeto.nome" name="nome" placeholder="Nome" ng-pattern="/^[a-zA-Z0-9]+$/" required />
+		</div>
+		<p class="help-block" ng-if="projetoFormulario.nome.$error.required">O nome deve ser preenchido.</p>
+		<p class="help-block" ng-if="projetoFormulario.nome.$error.pattern">O nome deve conter apenas letras e números</p>
+	</div>
+	<button type="submit" class="btn btn-success" ng-disabled="projetoFormulario.$invalid || sucesso">Criar</button>
+</form>

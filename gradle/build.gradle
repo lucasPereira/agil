@@ -1,0 +1,33 @@
+configurations {
+    bibliotecas
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+	bibliotecas	(
+		'joda-time:joda-time:2.7',
+		'org.ektorp:org.ektorp:1.4.2',
+		'org.glassfish.jersey.core:jersey-common:2.13',
+		'org.glassfish.jersey.core:jersey-server:2.13',
+		'org.glassfish.jersey.core:jersey-client:2.13',
+		'org.glassfish.jersey.containers:jersey-container-jetty-http:2.13',
+		'org.glassfish.jersey.media:jersey-media-json-jackson:2.13',
+		'org.slf4j:slf4j-simple:1.6.4'
+	)
+}
+
+task listarDependencias {
+	outputs.upToDateWhen { false }
+	doFirst {
+		configurations.bibliotecas.each { File file -> println file.name }
+	}
+}
+
+task baixarDependencias(type: Copy, dependsOn: 'listarDependencias') {
+	outputs.upToDateWhen { false }
+	from configurations.bibliotecas
+	into '../construcao/bibliotecas'
+}
