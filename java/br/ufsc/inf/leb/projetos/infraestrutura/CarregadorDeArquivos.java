@@ -2,11 +2,15 @@ package br.ufsc.inf.leb.projetos.infraestrutura;
 
 import java.io.File;
 
+import br.ufsc.inf.leb.projetos.AmbienteProjetos;
+
 public class CarregadorDeArquivos {
 
 	public File carregar(String pasta, String nome) {
-		String caminho = String.format("./%s/%s", pasta, nome);
-		return new File(caminho);
+		File pastaRaiz = new AmbienteProjetos().obterConfiguracoes().obterPastaRaiz();
+		File pastaAtual = new File(pastaRaiz, pasta);
+		File arquivo = new File(pastaAtual, nome);
+		return arquivo;
 	}
 
 }

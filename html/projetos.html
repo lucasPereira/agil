@@ -1,4 +1,4 @@
-<div class="alert alert-warning" ng-if="erroDeResposta"><p>Ocorreu uma resposta inesperada do servidor, foi mau ae.</p></div>
+<div class="alert alert-warning" ng-if="erroDeResposta"><p>Resposta inesperada do servidor.</p></div>
 
 <form class="navbar-form navbar-right" novalidate>
 	<div class="form-group">
@@ -19,8 +19,8 @@
 	</thead>
 	<tbody>
 		<tr ng-repeat="projeto in projetos | filter: busca | orderBy: '-ultimaAtualizacao'">
-			<td><a href="/#/projeto/{{projeto._id}}">{{projeto.nome}}</a></td>
-			<td><time datetime="{{projeto.ultimaAtualizacao">{{projeto.ultimaAtualizacao | date: 'dd/MM/y hh:mm'}}</time></td>
+			<td><a href="/#/projeto/{{projeto.nome}}">{{projeto.nome}}</a></td>
+			<td><time datetime="{{projeto.ultimaAtualizacao">{{projeto.ultimaAtualizacao | date: 'dd/MM/y HH:mm'}}</time></td>
 		</tr>
 	</tbody>
 </table>

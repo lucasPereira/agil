@@ -27,4 +27,12 @@ public class Projeto extends Documento {
 		this.ultimaAtualizacao = new DateTime();
 	}
 
+	public void importarArquivos() {
+		this.ultimaAtualizacao = new DateTime();
+	}
+
+	public void fixarClassePrincipal(String classePrincipal) {
+		this.classePrincipal = classePrincipal;
+	}
+
 }

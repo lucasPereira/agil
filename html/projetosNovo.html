@@ -1,8 +1,8 @@
-<div class="alert alert-success" ng-if="sucesso"><p>Projeto <a href="{{projeto.uri}}">{{projeto.nome}}</a> criado com sucesso.</p></div>
-<div class="alert alert-danger" ng-if="erroDoCliente400"><p>Ocorreu um erro ao criar o projeto. Certifique-se que os campos foram preenchidos corretamente.</p></div>
-<div class="alert alert-danger" ng-if="erroDoCliente409"><p>Ocorreu um erro ao criar o projeto. Certifique-se que já não existe um projeto com esse nome.</p></div>
-<div class="alert alert-warning" ng-if="erroDoServidor"><p>Ocorreu um erro no servidor, foi mau ae.</p></div>
-<div class="alert alert-warning" ng-if="erroDeResposta"><p>Ocorreu uma resposta inesperada do servidor, foi mau ae.</p></div>
+<div class="alert alert-success" ng-if="sucesso"><p>Projeto <a ng-href="{{projeto.uri}}" class="alert-link">{{projeto.nome}}</a> criado com sucesso.</p></div>
+<div class="alert alert-danger" ng-if="erroDoCliente400"><p>Erro ao criar o projeto. Certifique-se que os campos foram preenchidos corretamente.</p></div>
+<div class="alert alert-danger" ng-if="erroDoCliente409"><p>Erro ao criar o projeto. Certifique-se que já não existe um projeto com esse nome.</p></div>
+<div class="alert alert-warning" ng-if="erroDoServidor"><p>Erro interno do servidor.</p></div>
+<div class="alert alert-warning" ng-if="erroDeResposta"><p>Resposta inesperada do servidor.</p></div>
 
 <form ng-submit="criar()" name="projetoFormulario" novalidate>
 	<div class="form-group" ng-class="{'has-error': projetoFormulario.$invalid && projetoFormulario.$dirty, 'has-success': !projetoFormulario.$invalid && projetoFormulario.$dirty}">

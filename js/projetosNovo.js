@@ -1,7 +1,7 @@
 (function () {
 	'use strict';
 
-	angular.module('projetosAplicacao').controller('ProjetoNovoControle', function ($scope, $http) {
+	angular.module('projetosAplicacao').controller('ProjetosNovoControle', function ($scope, $http) {
 		$scope.projeto = {};
 
 		$scope.criar = function () {

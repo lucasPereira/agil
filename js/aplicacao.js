@@ -16,7 +16,17 @@
 
 		$routeProvider.when("/projetos/novo", {
 			templateUrl: '/html/projetosNovo',
-			controller: 'ProjetoNovoControle'
+			controller: 'ProjetosNovoControle'
+		});
+
+		$routeProvider.when("/projeto/:identificador", {
+			templateUrl: '/html/projeto',
+			controller: 'ProjetoControle'
+		});
+
+		$routeProvider.when("/projeto/:identificador/:caminho*", {
+			templateUrl: '/html/projeto',
+			controller: 'ProjetoControle'
 		});
 
 	}]);

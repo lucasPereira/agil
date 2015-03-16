@@ -26,6 +26,10 @@ public class BancoDeDocumentos {
 		conexaoDoCouch.create(documento);
 	}
 
+	public void atualizarDocumento(Documento documento) {
+		conexaoDoCouch.update(documento);
+	}
+
 	public void removerDocumento(Documento documento) {
 		conexaoDoCouch.delete(documento);
 	}

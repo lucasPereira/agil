@@ -3,6 +3,7 @@ package br.ufsc.inf.leb.projetos.recursos;
 import java.net.URI;
 import java.util.List;
 
+import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -19,6 +20,22 @@ import br.ufsc.inf.leb.projetos.persistencia.RepositorioDeProjetos;
 public class RecursoProjeto {
 
 	private static final String ER_NOME = "([a-zA-Z0-9])+";
+
+	@GET
+	@Produces("application/json")
+	public Response obter(@PathParam("identificador") String identificador) {
+		AmbienteProjetos ambienteProjetos = new AmbienteProjetos();
+		BancoDeDocumentos bancoDeDocumentos = ambienteProjetos.obterBancoDeDocumentos();
+		RepositorioDeProjetos repositorioDeProjetos = bancoDeDocumentos.obterRepositorioDeProjetos();
+		List<Projeto> projetos = repositorioDeProjetos.obterPorNome(identificador);
+		if (projetos.size() > 1) {
+			return Response.status(409).build();
+		}
+		if (projetos.size() < 1) {
+			return Response.status(404).build();
+		}
+		return Response.status(200).entity(projetos.get(0)).build();
+	}
 
 	@PUT
 	@Produces("application/json")
@@ -40,4 +57,5 @@ public class RecursoProjeto {
 		URI uri = configuracoes.coonstruirUri(RecursoProjeto.class, identificador);
 		return Response.status(201).location(uri).build();
 	}
+
 }
