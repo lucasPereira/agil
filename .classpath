@@ -11,9 +11,6 @@
 	<classpathentry kind="lib" path="jar/httpclient-4.3.jar"/>
 	<classpathentry kind="lib" path="jar/httpclient-cache-4.3.jar"/>
 	<classpathentry kind="lib" path="jar/httpcore-4.3.jar"/>
-	<classpathentry kind="lib" path="jar/jackson-annotations-2.2.2.jar"/>
-	<classpathentry kind="lib" path="jar/jackson-core-2.2.2.jar"/>
-	<classpathentry kind="lib" path="jar/jackson-databind-2.2.2.jar"/>
 	<classpathentry kind="lib" path="jar/javassist-3.18.1-GA.jar"/>
 	<classpathentry kind="lib" path="jar/javax.annotation-api-1.2.jar"/>
 	<classpathentry kind="lib" path="jar/javax.inject-1.jar"/>
