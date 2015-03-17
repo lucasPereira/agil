@@ -74,4 +74,8 @@ public class ConfiguracoesProjetos {
 		return "libs";
 	}
 
+	public String obterNomeDiretorioDosZips() {
+		return "zip";
+	}
+
 }

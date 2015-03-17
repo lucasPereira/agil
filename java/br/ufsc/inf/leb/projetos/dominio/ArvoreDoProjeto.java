@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import br.ufsc.inf.leb.projetos.AmbienteProjetos;
+import br.ufsc.inf.leb.projetos.ConfiguracoesProjetos;
 import br.ufsc.inf.leb.projetos.entidades.Nodo;
 
 public class ArvoreDoProjeto {
@@ -40,10 +41,18 @@ public class ArvoreDoProjeto {
 	}
 
 	private void adicionarFilhosSeNecessario(Nodo nodo, File arquivo) throws IOException {
-		boolean diretorioDosBinarios = new AmbienteProjetos().obterConfiguracoes().obterNomeDiretorioDosBinarios().equals(arquivo.getName());
-		if (arquivo.isDirectory() && !diretorioDosBinarios) {
+		ConfiguracoesProjetos configuracoes = new AmbienteProjetos().obterConfiguracoes();
+		String nomeDoArquivo = arquivo.getName();
+		Boolean diretorioDosBinarios = configuracoes.obterNomeDiretorioDosBinarios().equals(nomeDoArquivo);
+		Boolean diretorioDosZips = configuracoes.obterNomeDiretorioDosZips().equals(nomeDoArquivo);
+		if (arquivo.isDirectory() && !diretorioDosBinarios && !diretorioDosZips) {
 			for (File filho : arquivo.listFiles()) {
-				nodo.adicionarFilho(construirArvore(nodo, filho));
+				nomeDoArquivo = filho.getName();
+				diretorioDosBinarios = configuracoes.obterNomeDiretorioDosBinarios().equals(nomeDoArquivo);
+				diretorioDosZips = configuracoes.obterNomeDiretorioDosZips().equals(nomeDoArquivo);
+				if (!diretorioDosBinarios && !diretorioDosZips) {
+					nodo.adicionarFilho(construirArvore(nodo, filho));
+				}
 			}
 		}
 	}

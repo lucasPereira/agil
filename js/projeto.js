@@ -54,6 +54,10 @@
 			return '/projeto/' + $route.current.params.identificador + "/execucao";
 		}
 
+		$scope.obterUriDeExportacao = function () {
+			return '/projeto/' + $route.current.params.identificador + "/arquivos";
+		}
+
 		$scope.obterUriDoArquivoAtual = function () {
 			return '/projeto/' + $route.current.params.identificador + "/arquivo/" + $route.current.params.caminho;
 		}
