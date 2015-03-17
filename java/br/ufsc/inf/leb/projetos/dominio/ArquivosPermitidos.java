@@ -69,12 +69,13 @@ public class ArquivosPermitidos {
 		Files.copy(arquivoCompactado, arquivoTemporarioCompactadoDoProjeto.toPath());
 		ZipFile arquivoZipCompactadoDoProjeto = new ZipFile(arquivoTemporarioCompactadoDoProjeto);
 		arquivoZipCompactadoDoProjeto.extractAll(diretorioTemporarioDoProjeto.getAbsolutePath());
-		diretorioTemporarioDoProjeto = entrarNoPrimeiroDiretorio(diretorioTemporarioDoProjeto);
+		File diretorioTemporarioDoProjetoRaiz = entrarNoPrimeiroDiretorio(diretorioTemporarioDoProjeto);
 
-		removerNaoPermitidos(manipuladorDeArquivos, diretorioTemporarioDoProjeto);
+		removerNaoPermitidos(manipuladorDeArquivos, diretorioTemporarioDoProjetoRaiz);
 		manipuladorDeArquivos.remover(diretorioDoProjeto);
-		diretorioTemporarioDoProjeto.renameTo(diretorioDoProjeto);
+		diretorioTemporarioDoProjetoRaiz.renameTo(diretorioDoProjeto);
 		manipuladorDeArquivos.remover(diretorioTemporarioDoProjeto);
+		manipuladorDeArquivos.remover(arquivoTemporarioCompactadoDoProjeto);
 	}
 
 	private File entrarNoPrimeiroDiretorio(File diretorioTemporarioDoProjeto) throws ExcecaoDeArquivoCompactadoNoFormatoInvalido {

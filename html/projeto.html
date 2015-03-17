@@ -29,15 +29,13 @@
 					<div class="form-group">
 						<div class="btn-group">
 							<button type="button" class="btn btn-default" ng-click="abrirImportacaoDeProjeto()"><span class="glyphicon glyphicon glyphicon-cloud-upload"></span> Importar</button>
-							<button type="button" class="btn btn-default" ng-disabled="!arquivosNaoEncontrado"><span class="glyphicon glyphicon-cloud-download"></span> Exportar</button>
+							<button type="button" class="btn btn-default" ng-disabled="arquivosNaoEncontrado"><span class="glyphicon glyphicon-cloud-download"></span> Exportar</button>
 						</div>
 						<div class="btn-group">
-							<select class="form-control">
-								<option ng-repeat="classe in classes | filter: '.java' | orderBy: 'nome'" ng-class="{'selected': classe.nome === projeto.classePrincipal}" ng-click="salvarClassePrincipal(classe)" value="classe.caminho">{{classe.nome}}</option>
-							</select>
+							<select class="form-control" ng-model="classePrincipalSelecionada" ng-disabled="!classes || classes.length === 0" ng-options="classe.nome for classe in classes" ng-click="salvarClassePrincipal()"></select>
 						</div>
 						<div class="btn-group">
-							<button type="button" class="btn btn-default" ng-disabled="projeto.classePrincipal"><span class="glyphicon glyphicon-play"></span> Executar</button>
+							<a target="_blank" type="button" class="btn btn-default" ng-disabled="projeto.classePrincipal === null" href="{{obterUriDeExecucao()}}"><span class="glyphicon glyphicon-play"></span> Executar</a>
 						</div>
 					</div>
 					<input name="arquivos" type="file" id="selecaoDeProjeto" accept="application/zip" />
@@ -60,11 +58,12 @@
 				</div>
 			</div>
 			<ol class="breadcrumb" ng-if="arquivoAtual">
-				<li><a ng-click="irParaInicio()" href="/#/projeto/{{projeto.nome}}"><span class="glyphicon glyphicon-home"></span></a></li>
-				<li ng-click="voltar()" ng-if="!estaNoInicio()"><a href="/#/projeto/{{pilha[pilha.length - 1].caminho}}">..</a></li>
-				<li ng-click="entrar(arquivoAtual)" ng-if="!estaNoInicio()"><a href="/#/projeto/{{arquivoAtual.caminho}}">{{arquivoAtual.nome}}</a></li>
+				<li><a href="/#/projeto/{{projeto.nome}}"><span class="glyphicon glyphicon-home"></span></a></li>
+				<li ng-if="!estaNoInicio()"><a href="/#/projeto/{{pilha[pilha.length - 1].caminho}}">..</a></li>
+				<li ng-if="!estaNoInicio()"><a href="/#/projeto/{{arquivoAtual.caminho}}">{{arquivoAtual.nome}}</a></li>
 			</ol>
 			<p ng-if="arquivosNaoEncontrado">Nenhum arquivo.</p>
+			<p ng-if="arquivoAtual && !arquivoAtual.diretorio && !arquivoAtual.conteudo">Não existe nenhuma visualização disponível para esse arquivo, mas você pode <a href="{{obterUriDoArquivoAtual()}}">abri-lo diretamente através do seu navegador</a>.</p>
 		</div>
 
 		<pre ng-if="!arquivoAtual.diretorio && arquivoAtual.conteudo">{{arquivoAtual.conteudo}}</pre>
@@ -78,11 +77,3 @@
 		</div>
 	</div>
 </div>
-
-<!-- <applet -->
-<!-- 	codebase="http://localhost:7000/projeto/umProjeto/arquivo/bin" -->
-<!-- 	archive="umProjeto.jar, ../libs/biblioteca.jar" -->
-<!-- 	code="br.ufsc.umProjeto.Principal.class" -->
-<!-- 	width="500px" -->
-<!-- 	height="500px" -->
-<!-- ></applet> -->

@@ -28,11 +28,16 @@ public class Projeto extends Documento {
 	}
 
 	public void importarArquivos() {
+		this.classePrincipal = null;
 		this.ultimaAtualizacao = new DateTime();
 	}
 
 	public void fixarClassePrincipal(String classePrincipal) {
 		this.classePrincipal = classePrincipal;
+	}
+
+	public String obterClassePrincipal() {
+		return classePrincipal;
 	}
 
 }

@@ -11,6 +11,8 @@ import br.ufsc.inf.leb.projetos.recursos.RecursoJs;
 import br.ufsc.inf.leb.projetos.recursos.RecursoProjeto;
 import br.ufsc.inf.leb.projetos.recursos.RecursoProjetoArquivo;
 import br.ufsc.inf.leb.projetos.recursos.RecursoProjetoArquivos;
+import br.ufsc.inf.leb.projetos.recursos.RecursoProjetoClassePrincipal;
+import br.ufsc.inf.leb.projetos.recursos.RecursoProjetoExecutacao;
 import br.ufsc.inf.leb.projetos.recursos.RecursoProjetos;
 import br.ufsc.inf.leb.projetos.recursos.RecursoRaiz;
 
@@ -24,6 +26,8 @@ public class AplicacaoProjetos extends ResourceConfig {
 		register(RecursoProjeto.class);
 		register(RecursoProjetoArquivo.class);
 		register(RecursoProjetoArquivos.class);
+		register(RecursoProjetoClassePrincipal.class);
+		register(RecursoProjetoExecutacao.class);
 		register(RecursoProjetos.class);
 		register(RecursoRaiz.class);
 		register(FabricaDeMapeadoresDoJersey.class);

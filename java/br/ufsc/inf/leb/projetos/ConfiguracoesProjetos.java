@@ -70,4 +70,8 @@ public class ConfiguracoesProjetos {
 		return "src";
 	}
 
+	public String obterNomeDiretorioDasBibliotecas() {
+		return "libs";
+	}
+
 }

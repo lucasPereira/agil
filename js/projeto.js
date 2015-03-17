@@ -32,6 +32,7 @@
 		}
 
 		function inicializarVariaveisClassePrincipal() {
+			$scope.classePrincipalSelecionada = false;
 			$scope.classePrincipalSucesso = false;
 			$scope.classePrincipalErroDeCompilacao = false;
 			$scope.classePrincipalErroDeResposta = false;
@@ -49,14 +50,27 @@
 			requisicao.error(receberArquivosDoProjetoComErro);
 		}
 
-		function salvarClassePrincipal(classe) {
-			var requisicao = $http({method: 'PUT', url: '/projeto/' + $route.current.params.identificador + '/classePrincipal', headers: {'Content-Type': 'application/json'}});
-			requisicao.success(fixarClassePrincipalComSucesso);
-			requisicao.error(fixarClassePrincipalComErro);
+		$scope.obterUriDeExecucao = function () {
+			return '/projeto/' + $route.current.params.identificador + "/execucao";
+		}
+
+		$scope.obterUriDoArquivoAtual = function () {
+			return '/projeto/' + $route.current.params.identificador + "/arquivo/" + $route.current.params.caminho;
+		}
+
+		$scope.salvarClassePrincipal = function () {
+			if ($scope.classePrincipalSelecionada) {
+				var requisicao = $http({method: 'PUT', url: '/projeto/' + $route.current.params.identificador + '/classePrincipal', data: $scope.classePrincipalSelecionada, headers: {'Content-Type': 'application/json'}});
+				requisicao.success(fixarClassePrincipalComSucesso);
+				requisicao.error(fixarClassePrincipalComErro);
+			}
 		}
 
 		function receberProjetoComSucesso(dados, estado, cabecalhos, configuracoes) {
 			$scope.projeto = dados;
+			if ($scope.projeto.classePrincipal === undefined) {
+				$scope.projeto.classePrincipal = null;
+			}
 			$scope.uriCaminho = $route.current.params.identificador + "/" + $route.current.params.caminho;
 			$scope.projetoSucesso = true;
 			document.querySelector('#selecaoDeProjeto').addEventListener('change', importarSelecionarArquivo, false);
@@ -73,9 +87,14 @@
 
 		function fixarClassePrincipalComSucesso(dados, estado) {
 			$scope.classePrincipalSucesso = true;
+			inicializarVariaveisProjeto();
+			inicializarVariaveisArquivos();
+			inicializarVariaveisImportacao();
+			buscarProjeto();
 		}
 
 		function fixarClassePrincipalComErro(dados, estado) {
+			console.log(dados);
 			if (estado === 400) {
 				$scope.classePrincipalErroDeCompilacao = true;
 			} else {
@@ -139,6 +158,9 @@
 					var classe = {
 						nome: filho.caminho.replace(/\//g, '.').replace($scope.arquivoRaiz.nome + '.src.', '').replace(/\.java$/, ''),
 						caminho: filho.caminho
+					}
+					if ($scope.projeto.classePrincipal === classe.nome) {
+						$scope.classePrincipalSelecionada = classe;
 					}
 					classes.push(classe);
 				}

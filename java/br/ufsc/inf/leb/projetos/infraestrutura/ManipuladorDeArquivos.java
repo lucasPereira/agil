@@ -39,6 +39,14 @@ public class ManipuladorDeArquivos {
 		return arquivo;
 	}
 
+	public void escreverNaSaidaPadrao(InputStream fluxoDeDados) throws IOException {
+		byte[] buffer = new byte[BUFFER];
+		Integer lidos = 0;
+		while ((lidos = fluxoDeDados.read(buffer, 0, BUFFER)) > 0) {
+			System.out.write(buffer, 0, lidos);
+		}
+	}
+
 	public void remover(File arquivo) {
 		if (arquivo.isDirectory()) {
 			for (File arquivoFilho : arquivo.listFiles()) {
