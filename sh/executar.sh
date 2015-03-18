@@ -1,5 +1,5 @@
 #!/bin/bash
 
-cd ..
-bibliotecas=`find jar -name "*.jar" | paste -s -d ":"`
-java -classpath $bibliotecas:binarios br.ufsc.inf.leb.projetos.ServidorProjetos
+cd $1
+bibliotecas=`find $1/jar -name "*.jar" | paste -s -d ":"`
+java -classpath $bibliotecas:$1/binarios br.ufsc.inf.leb.projetos.ServidorProjetos

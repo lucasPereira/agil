@@ -1,25 +1,36 @@
 #!/bin/bash
 
-pasta=/home/geral/projetos
-arquivoPid=/home/geral/projetos/construcao/projetos.pid
-case $1 in
+pasta='/home/lucas/projetos/institucionais/ufsc/mestrado/projetos'
+arquivoPid="${pasta}/construcao/projetos.pid"
+executavel="${pasta}/sh/executar.sh"
+logs="${pasta}/construcao/logs.txt"
+
+case "$1" in
 	start)
 		echo "Iniciado Projetos."
-		if [ ! -f $arquivoPid ]; then
-			cd $pasta
-			cd sh
-			nohup executar.sh /tmp 2>> /dev/null >> /dev/null & echo $! > $arquivoPid
+		if [ ! -f ${arquivoPid} ]
+		then
+			cd ${pasta}
+			bibliotecas=`find ${pasta}/jar -name "*.jar" | paste -s -d ":"`
+			binarios="${pasta}/binarios"
+			classePrincipal="br.ufsc.inf.leb.projetos.ServidorProjetos"
+			classpath="${bibliotecas}:${binarios}"
+			nohup java -classpath ${classpath} ${classePrincipal} >> ${logs} 2>> ${logs} & echo $! > ${arquivoPid}
 		else
-			echo "Serviço já iniciado."
+			echo "Serviço já está em execução"
 		fi
+	;;
 	stop)
 		echo "Parando Projetos."
-		if [ -f $arquivoPid ]; then
-			pid=`cat $arquivoPid}`
-			kill $pid
-			rm $arquivoPid
-		else 
-			echo "Serviço já parado."i
+		if [ -f ${arquivoPid} ]
+		then
+			kill -9 `cat ${arquivoPid}`
+			rm -f ${arquivoPid}
+		else
+			echo "Servico já está parado"
 		fi
+	;;
+	*)
+		echo "Comando desconhecido."
 	;;
 esac
