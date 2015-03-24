@@ -39,6 +39,7 @@ public class RecursoProjetoArquivos {
 			}
 			return Response.status(200).entity(arquivosEmArvore).build();
 		} catch (IOException excecao) {
+			excecao.printStackTrace();
 			return Response.status(500).build();
 		}
 	}
