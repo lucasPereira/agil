@@ -2,6 +2,8 @@ package br.ufsc.inf.leb.projetos.dominio;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.MalformedInputException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
@@ -50,9 +52,17 @@ public class ArvoreDoProjeto {
 	private void adicionarConteudoTextualSeNecessario(Nodo nodo, File arquivo) throws IOException {
 		if (arquivo.isFile() && naoExcedeOTamanhoMaximoDeLeitura(arquivo) && possuiExtensaoTextual(arquivo)) {
 			StringBuilder construtorDoConteudo = new StringBuilder();
-			for (String linha : Files.readAllLines(arquivo.toPath())) {
-				construtorDoConteudo.append(linha);
-				construtorDoConteudo.append("\n");
+			try {
+				for (String linha : Files.readAllLines(arquivo.toPath(), StandardCharsets.UTF_8)) {
+					construtorDoConteudo.append(linha);
+					construtorDoConteudo.append("\n");
+				}
+			} catch (MalformedInputException excecao) {
+				excecao.printStackTrace();
+				for (String linha : Files.readAllLines(arquivo.toPath(), StandardCharsets.ISO_8859_1)) {
+					construtorDoConteudo.append(linha);
+					construtorDoConteudo.append("\n");
+				}
 			}
 			nodo.fixarConteudo(construtorDoConteudo.toString());
 		}
