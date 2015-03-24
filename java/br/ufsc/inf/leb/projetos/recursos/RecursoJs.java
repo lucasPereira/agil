@@ -8,7 +8,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
-import br.ufsc.inf.leb.projetos.infraestrutura.CarregadorDeArquivos;
+import br.ufsc.inf.leb.projetos.dominio.ManipuladorDeArquivos;
 
 @Path("/js/{identificador}")
 public class RecursoJs {
@@ -17,7 +17,7 @@ public class RecursoJs {
 	@Produces("application/javascript")
 	public Response obter(@PathParam("identificador") String identificador) {
 		String nome = String.format("%s.js", identificador);
-		File arquivo = new CarregadorDeArquivos().carregar("js", nome);
+		File arquivo = new ManipuladorDeArquivos().carregarArquivo("js", nome);
 		if (arquivo.exists()) {
 			return Response.status(200).entity(arquivo).build();
 		} else {

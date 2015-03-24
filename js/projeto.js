@@ -38,31 +38,34 @@
 			$scope.classePrincipalErroDeResposta = false;
 		}
 
-		function buscarProjeto() {
-			var requisicao = $http({method: 'GET', url: '/projeto/' + $route.current.params.identificador, headers: {'Accept': 'application/json'}});
-			requisicao.success(receberProjetoComSucesso);
-			requisicao.error(receberProjetoComErro);
-		}
-
-		function buscarArquivosDoProjeto() {
-			var requisicao = $http({method: 'GET', url: '/projeto/' + $route.current.params.identificador + '/arquivos', headers: {'Accept': 'application/json'}});
-			requisicao.success(receberArquivosDoProjetoComSucesso);
-			requisicao.error(receberArquivosDoProjetoComErro);
-		}
-
 		$scope.obterUriDeExecucao = function () {
 			return '/projeto/' + $route.current.params.identificador + "/execucao";
 		}
 
 		$scope.obterUriDeExportacao = function () {
-			return '/projeto/' + $route.current.params.identificador + "/arquivos";
+			return '/projeto/' + $route.current.params.identificador + "/arquivos.zip";
 		}
 
 		$scope.obterUriDoArquivoAtual = function () {
 			return '/projeto/' + $route.current.params.identificador + "/arquivo/" + $route.current.params.caminho;
 		}
 
+		function buscarProjeto() {
+			$scope.carregando = true;
+			var requisicao = $http({method: 'GET', url: '/projeto/' + $route.current.params.identificador, headers: {'Accept': 'application/json'}});
+			requisicao.success(receberProjetoComSucesso);
+			requisicao.error(receberProjetoComErro);
+		}
+
+		function buscarArquivosDoProjeto() {
+			$scope.carregando = true;
+			var requisicao = $http({method: 'GET', url: '/projeto/' + $route.current.params.identificador + '/arquivos', headers: {'Accept': 'application/json'}});
+			requisicao.success(receberArquivosDoProjetoComSucesso);
+			requisicao.error(receberArquivosDoProjetoComErro);
+		}
+
 		$scope.salvarClassePrincipal = function () {
+			$scope.carregando = true;
 			if ($scope.classePrincipalSelecionada) {
 				var requisicao = $http({method: 'PUT', url: '/projeto/' + $route.current.params.identificador + '/classePrincipal', data: $scope.classePrincipalSelecionada, headers: {'Content-Type': 'application/json'}});
 				requisicao.success(fixarClassePrincipalComSucesso);
@@ -79,6 +82,7 @@
 			$scope.projetoSucesso = true;
 			document.querySelector('#selecaoDeProjeto').addEventListener('change', importarSelecionarArquivo, false);
 			buscarArquivosDoProjeto();
+			$scope.carregando = false;
 		}
 
 		function receberProjetoComErro(dados, estado, cabecalhos, configuracoes) {
@@ -87,6 +91,7 @@
 			} else {
 				$scope.projetoErroDeResposta = true;
 			}
+			$scope.carregando = false;
 		}
 
 		function fixarClassePrincipalComSucesso(dados, estado) {
@@ -95,6 +100,7 @@
 			inicializarVariaveisArquivos();
 			inicializarVariaveisImportacao();
 			buscarProjeto();
+			$scope.carregando = false;
 		}
 
 		function fixarClassePrincipalComErro(dados, estado) {
@@ -104,6 +110,29 @@
 			} else {
 				$scope.classePrincipalErroDeResposta = true;
 			}
+			$scope.carregando = false;
+		}
+
+		function receberArquivosDoProjetoComSucesso(dados, estado, cabecalhos, configuracoes) {
+			$scope.arquivoRaiz = dados
+			$scope.arquivoAtual = $scope.arquivoRaiz;
+			$scope.pilha = [$scope.arquivoAtual];
+			$scope.arquivosSucesso = true;
+			$scope.classes = encontrarClassesJava();
+			var sequencia = encontrarCaminho($scope.arquivoAtual, $scope.uriCaminho);
+			for (var indice in sequencia) {
+				$scope.entrar(sequencia[indice]);
+			}
+			$scope.carregando = false;
+		}
+
+		function receberArquivosDoProjetoComErro(dados, estado, cabecalhos, configuracoes) {
+			if (estado === 404) {
+				$scope.arquivosNaoEncontrado = true;
+			} else {
+				$scope.arquivosErroDeResposta = true;
+			}
+			$scope.carregando = false;
 		}
 
 		$scope.voltar = function () {
@@ -126,7 +155,7 @@
 			return $scope.pilha.length === 1
 		}
 
-		function encontrarClasses() {
+		function encontrarClassesJava() {
 			var src;
 			for (var indice in $scope.arquivoRaiz.filhos) {
 				var filho = $scope.arquivoRaiz.filhos[indice];
@@ -139,18 +168,6 @@
 				adicionarClasses(src, classes);
 			}
 			return classes;
-		}
-
-		function receberArquivosDoProjetoComSucesso(dados, estado, cabecalhos, configuracoes) {
-			$scope.arquivoRaiz = dados
-			$scope.arquivoAtual = $scope.arquivoRaiz;
-			$scope.pilha = [$scope.arquivoAtual];
-			$scope.arquivosSucesso = true;
-			$scope.classes = encontrarClasses();
-			var sequencia = encontrarCaminho($scope.arquivoAtual, $scope.uriCaminho);
-			for (var indice in sequencia) {
-				$scope.entrar(sequencia[indice]);
-			}
 		}
 
 		function adicionarClasses(nodo, classes) {
@@ -188,15 +205,6 @@
 			}
 			return null;
 		}
-
-		function receberArquivosDoProjetoComErro(dados, estado, cabecalhos, configuracoes) {
-			if (estado === 404) {
-				$scope.arquivosNaoEncontrado = true;
-			} else {
-				$scope.arquivosErroDeResposta = true;
-			}
-		}
-
 		$scope.abrirImportacaoDeProjeto = function () {
 			inicializarVariaveisImportacao();
 			document.querySelector("#selecaoDeProjeto").click();

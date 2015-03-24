@@ -1,10 +1,8 @@
 package br.ufsc.inf.leb.projetos.recursos;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -20,13 +18,11 @@ import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import br.ufsc.inf.leb.projetos.AmbienteProjetos;
-import br.ufsc.inf.leb.projetos.ConfiguracoesProjetos;
 import br.ufsc.inf.leb.projetos.dominio.ArquivosPermitidos;
 import br.ufsc.inf.leb.projetos.dominio.ArvoreDoProjeto;
 import br.ufsc.inf.leb.projetos.dominio.ExcecaoDeArquivoCompactadoNoFormatoInvalido;
 import br.ufsc.inf.leb.projetos.entidades.Nodo;
 import br.ufsc.inf.leb.projetos.entidades.Projeto;
-import br.ufsc.inf.leb.projetos.infraestrutura.ManipuladorDeArquivos;
 import br.ufsc.inf.leb.projetos.persistencia.BancoDeDocumentos;
 import br.ufsc.inf.leb.projetos.persistencia.RepositorioDeProjetos;
 
@@ -43,25 +39,7 @@ public class RecursoProjetoArquivos {
 			}
 			return Response.status(200).entity(arquivosEmArvore).build();
 		} catch (IOException excecao) {
-			return Response.status(400).build();
-		}
-	}
-
-	@GET
-	@Produces("application/zip")
-	public Response obterZip(@PathParam("identificador") String identificador) {
-		AmbienteProjetos ambienteProjetos = new AmbienteProjetos();
-		ConfiguracoesProjetos configuracoes = ambienteProjetos.obterConfiguracoes();
-		File diretorioDosProjetos = configuracoes.obterDiretorioDosArquivosDosProjetos();
-		File diretorioDoProjeto = new File(diretorioDosProjetos, identificador);
-		String nomeDoArquivoZip = identificador + ".zip";
-		String nomeDoDiretorioDosZips = configuracoes.obterNomeDiretorioDosZips();
-		File diretorioDoZipDoProjeto = new File(diretorioDoProjeto, nomeDoDiretorioDosZips);
-		File arquivoDoZipDoProjeto = new File(diretorioDoZipDoProjeto, nomeDoArquivoZip);
-		if (arquivoDoZipDoProjeto.exists()) {
-			return Response.status(200).entity(arquivoDoZipDoProjeto).build();
-		} else {
-			return Response.status(404).build();
+			return Response.status(500).build();
 		}
 	}
 
@@ -80,48 +58,30 @@ public class RecursoProjetoArquivos {
 			return Response.status(404).build();
 		}
 		try {
-			ArquivosPermitidos arquivosPermitidos = new ArquivosPermitidos()
-					.permitirArquivo(".classpath")
-					.permitirArquivo(".project")
-					.permitirDiretorio("src", new ArquivosPermitidos()
-							.permitirArquivosComExtensao("java")
-							.recursivo())
-					.permitirDiretorio("resources", new ArquivosPermitidos()
-							.permitirTodosArquivos()
-							.recursivo())
-					.permitirDiretorio("libs", new ArquivosPermitidos()
-							.permitirArquivosComExtensao("jar"));
+			ArquivosPermitidos arquivosPermitidos = obterArquivosPermitidos();
 			arquivosPermitidos.salvarArquivos(identificador, arquivoCompactado);
 			Projeto projeto = projetos.get(0);
 			projeto.importarArquivos();
-			gerarArquivoParaDonwload(identificador);
 			bancoDeDocumentos.atualizarDocumento(projeto);
 			return Response.status(200).build();
-		} catch (IOException | ExcecaoDeArquivoCompactadoNoFormatoInvalido | ZipException | InterruptedException excecao) {
+		} catch (IOException | ExcecaoDeArquivoCompactadoNoFormatoInvalido | ZipException excecao) {
 			excecao.printStackTrace();
 			return Response.status(400).build();
 		}
 	}
 
-	private void gerarArquivoParaDonwload(String identificador) throws IOException, InterruptedException {
-		AmbienteProjetos ambienteProjetos = new AmbienteProjetos();
-		ConfiguracoesProjetos configuracoes = ambienteProjetos.obterConfiguracoes();
-		ManipuladorDeArquivos manipuladorDeArquivos = new ManipuladorDeArquivos();
-		File diretorioDosProjetos = configuracoes.obterDiretorioDosArquivosDosProjetos();
-		File diretorioDoProjeto = new File(diretorioDosProjetos, identificador);
-		String nomeDoArquivoZip = identificador + ".zip";
-		String nomeDoDiretorioDosZips = configuracoes.obterNomeDiretorioDosZips();
-		String nomeDoDiretorioDosBinarios = configuracoes.obterNomeDiretorioDosBinarios();
-		File diretorioDoZipDoProjeto = new File(diretorioDoProjeto, nomeDoDiretorioDosZips);
-		File arquivoDoZipDoProjeto = new File(diretorioDoZipDoProjeto, nomeDoArquivoZip);
-		manipuladorDeArquivos.remover(diretorioDoZipDoProjeto);
-		diretorioDoZipDoProjeto.mkdir();
-		String comando = String.format("zip -r %s %s -x \"%s/%s/*\" \"%s/%s/\" \"%s/%s/*\"", arquivoDoZipDoProjeto.getAbsolutePath(), identificador, identificador, nomeDoDiretorioDosBinarios, identificador, nomeDoDiretorioDosZips, identificador, nomeDoDiretorioDosZips);
-		System.out.println(comando);
-		System.out.println(diretorioDosProjetos.getAbsolutePath());
-		Runtime.getRuntime().exec(comando, null, diretorioDosProjetos);
-		Process processo = Runtime.getRuntime().exec(comando);
-		processo.waitFor(10, TimeUnit.SECONDS);
+	private ArquivosPermitidos obterArquivosPermitidos() {
+		return new ArquivosPermitidos()
+				.permitirArquivo(".classpath")
+				.permitirArquivo(".project")
+				.permitirDiretorio("src", new ArquivosPermitidos()
+						.permitirArquivosComExtensao("java")
+						.recursivo())
+				.permitirDiretorio("resources", new ArquivosPermitidos()
+						.permitirTodosArquivos()
+						.recursivo())
+				.permitirDiretorio("libs", new ArquivosPermitidos()
+						.permitirArquivosComExtensao("jar"));
 	}
 
 }

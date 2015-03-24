@@ -9,16 +9,16 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
 import br.ufsc.inf.leb.projetos.AmbienteProjetos;
+import br.ufsc.inf.leb.projetos.ConfiguracoesProjetos;
 
 @Path("/projeto/{identificador}/arquivo/{caminho: .+}")
 public class RecursoProjetoArquivo {
 
 	@GET
 	@Produces("application/octet-stream")
-	public Response obter(@PathParam("identificador") String identificador, @PathParam("caminho") String caminho) {
-		File diretorioDosProjetos = new AmbienteProjetos().obterConfiguracoes().obterDiretorioDosArquivosDosProjetos();
-		File diretorioDoProjeto = new File(diretorioDosProjetos, identificador);
-		File arquivoSolicitado = new File(diretorioDoProjeto, caminho);
+	public Response obter(@PathParam("identificador") String nomeDoProjeto, @PathParam("caminho") String caminho) {
+		ConfiguracoesProjetos configuracoesProjeto = new AmbienteProjetos().obterConfiguracoes();
+		File arquivoSolicitado = configuracoesProjeto.obterArquivoDoProjeto(nomeDoProjeto, caminho);
 		if (!arquivoSolicitado.exists()) {
 			return Response.status(404).build();
 		}

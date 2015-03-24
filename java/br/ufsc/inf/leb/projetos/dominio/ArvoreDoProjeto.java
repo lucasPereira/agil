@@ -16,15 +16,14 @@ public class ArvoreDoProjeto {
 	private static final List<String> EXTENSOES_TEXTUAIS = Arrays.asList(".classpath", ".project", ".java", ".txt");
 
 	public Nodo construirArvore(String nomeDoProjeto) throws IOException {
-		File diretorioDosProjetos = new AmbienteProjetos().obterConfiguracoes().obterDiretorioDosArquivosDosProjetos();
-		File diretorioDoProjeto = new File(diretorioDosProjetos, nomeDoProjeto);
-		return construirArvore(diretorioDoProjeto);
+		ConfiguracoesProjetos configuracoesProjetos = new AmbienteProjetos().obterConfiguracoes();
+		File diretorioDosArquivosDoProjeto = configuracoesProjetos.obterDiretorioDosArquivosDoProjeto(nomeDoProjeto);
+		return construirArvore(diretorioDosArquivosDoProjeto, nomeDoProjeto);
 	}
 
-	private Nodo construirArvore(File arquivo) throws IOException {
+	private Nodo construirArvore(File arquivo, String nomeDoProjeto) throws IOException {
 		if (arquivo.exists()) {
-			String nome = arquivo.getName();
-			Nodo nodo = (arquivo.isDirectory()) ? Nodo.construirDiretorio(nome) : Nodo.construirArquivo(nome);
+			Nodo nodo = (arquivo.isDirectory()) ? Nodo.construirDiretorio(nomeDoProjeto) : Nodo.construirArquivo(nomeDoProjeto);
 			adicionarConteudoTextualSeNecessario(nodo, arquivo);
 			adicionarFilhosSeNecessario(nodo, arquivo);
 			return nodo;
@@ -41,18 +40,9 @@ public class ArvoreDoProjeto {
 	}
 
 	private void adicionarFilhosSeNecessario(Nodo nodo, File arquivo) throws IOException {
-		ConfiguracoesProjetos configuracoes = new AmbienteProjetos().obterConfiguracoes();
-		String nomeDoArquivo = arquivo.getName();
-		Boolean diretorioDosBinarios = configuracoes.obterNomeDiretorioDosBinarios().equals(nomeDoArquivo);
-		Boolean diretorioDosZips = configuracoes.obterNomeDiretorioDosZips().equals(nomeDoArquivo);
-		if (arquivo.isDirectory() && !diretorioDosBinarios && !diretorioDosZips) {
+		if (arquivo.isDirectory()) {
 			for (File filho : arquivo.listFiles()) {
-				nomeDoArquivo = filho.getName();
-				diretorioDosBinarios = configuracoes.obterNomeDiretorioDosBinarios().equals(nomeDoArquivo);
-				diretorioDosZips = configuracoes.obterNomeDiretorioDosZips().equals(nomeDoArquivo);
-				if (!diretorioDosBinarios && !diretorioDosZips) {
-					nodo.adicionarFilho(construirArvore(nodo, filho));
-				}
+				nodo.adicionarFilho(construirArvore(nodo, filho));
 			}
 		}
 	}

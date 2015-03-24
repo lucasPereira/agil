@@ -1,3 +1,5 @@
+<div class="carregamento" ng-show="carregando"><img src="/gif/carregando" /></div>
+
 <div class="alert alert-success" ng-if="importacaoSucesso"><p>Projeto importado com sucesso.</p></div>
 <div class="alert alert-info" ng-if="importacaoInformacaoSelecionarArquivo"><p>Selecione um arquivo <strong>{{importacaoExtensaoPermitida}}</strong> com os arquivos do seu projeto.</p></div>
 <div class="alert alert-danger" ng-if="importacaoErroExtensao"><p>Somente é permitido carregar o projeto no formato <strong>{{importacaoExtensaoPermitida}}</strong>.</p></div>

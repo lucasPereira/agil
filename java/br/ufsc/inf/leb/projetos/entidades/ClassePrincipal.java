@@ -1,5 +1,7 @@
 package br.ufsc.inf.leb.projetos.entidades;
 
+import br.ufsc.inf.leb.projetos.AmbienteProjetos;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ClassePrincipal {
@@ -16,6 +18,10 @@ public class ClassePrincipal {
 
 	public String obterCaminho() {
 		return caminho;
+	}
+
+	public String obterCaminhoDaClasse() {
+		return new AmbienteProjetos().obterConfiguracoes().obterCaminhoDoArquivoFonteRealitivoAoDiretorioDosFontes(nome);
 	}
 
 }
