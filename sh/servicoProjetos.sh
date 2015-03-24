@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pasta='/home/lucas/projetos/institucionais/ufsc/mestrado/projetos'
+pasta='/home/geral/projetos'
 arquivoPid="${pasta}/construcao/projetos.pid"
 executavel="${pasta}/sh/executar.sh"
 logs="${pasta}/construcao/logs.txt"
