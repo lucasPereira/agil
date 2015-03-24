@@ -10,19 +10,18 @@ import javax.ws.rs.core.Response;
 
 import br.ufsc.inf.leb.projetos.dominio.ManipuladorDeArquivos;
 
-@Path("/css/{identificador}")
-public class RecursoCss {
+@Path("/gif/{identificador}")
+public class RecursoGif {
 
 	@GET
-	@Produces("text/css")
+	@Produces("image/gif")
 	public Response obter(@PathParam("identificador") String identificador) {
-		String nome = String.format("%s.css", identificador);
-		File arquivo = new ManipuladorDeArquivos().carregarArquivo("css", nome);
-		if (arquivo.exists()) {
-			return Response.status(200).entity(arquivo).build();
-		} else {
+		String nome = String.format("%s.gif", identificador);
+		File arquivo = new ManipuladorDeArquivos().carregarArquivo("gif", nome);
+		if (!arquivo.exists()) {
 			return Response.status(404).build();
 		}
+		return Response.status(200).entity(arquivo).build();
 	}
 
 }

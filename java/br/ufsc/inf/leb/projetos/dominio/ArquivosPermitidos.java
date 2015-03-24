@@ -3,7 +3,6 @@ package br.ufsc.inf.leb.projetos.dominio;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,16 +11,15 @@ import java.util.regex.Pattern;
 
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
+import net.lingala.zip4j.model.ZipParameters;
 import br.ufsc.inf.leb.projetos.AmbienteProjetos;
-import br.ufsc.inf.leb.projetos.infraestrutura.ManipuladorDeArquivos;
+import br.ufsc.inf.leb.projetos.ConfiguracoesProjetos;
 
 public class ArquivosPermitidos {
 
-	private static Long CONTADOR = 0L;
-
-	Boolean recursivo;
-	List<Pattern> arquivosPermitidos;
-	Map<String, ArquivosPermitidos> diretoriosPorNome;
+	private Boolean recursivo;
+	private List<Pattern> arquivosPermitidos;
+	private Map<String, ArquivosPermitidos> diretoriosPorNome;
 
 	public ArquivosPermitidos() {
 		arquivosPermitidos = new LinkedList<>();
@@ -57,25 +55,38 @@ public class ArquivosPermitidos {
 		return this;
 	}
 
-	public void salvarArquivos(String nomeDoProjeto, InputStream arquivoCompactado) throws IOException, ExcecaoDeArquivoCompactadoNoFormatoInvalido, ZipException {
+	public void salvarArquivos(String nomeDoProjeto, InputStream fluxoDeDados) throws IOException, ExcecaoDeArquivoCompactadoNoFormatoInvalido, ZipException {
 		ManipuladorDeArquivos manipuladorDeArquivos = new ManipuladorDeArquivos();
-
-		File diretorioTemporarioDosProjetos = new AmbienteProjetos().obterConfiguracoes().obterDiretorioDosArquivosTemporariosDosProjetos();
-		File diretorioTemporarioDoProjeto = new File(diretorioTemporarioDosProjetos, nomeDoProjeto + obterIdentificadorAtual());
-		File diretorioDosProjetos = new AmbienteProjetos().obterConfiguracoes().obterDiretorioDosArquivosDosProjetos();
-		File diretorioDoProjeto = new File(diretorioDosProjetos, nomeDoProjeto);
-
-		File arquivoTemporarioCompactadoDoProjeto = new File(diretorioTemporarioDoProjeto + ".zip");
-		Files.copy(arquivoCompactado, arquivoTemporarioCompactadoDoProjeto.toPath());
-		ZipFile arquivoZipCompactadoDoProjeto = new ZipFile(arquivoTemporarioCompactadoDoProjeto);
-		arquivoZipCompactadoDoProjeto.extractAll(diretorioTemporarioDoProjeto.getAbsolutePath());
-		File diretorioTemporarioDoProjetoRaiz = entrarNoPrimeiroDiretorio(diretorioTemporarioDoProjeto);
-
+		GeradorDeNomesUnicos geradorDeNomesUnicos = new GeradorDeNomesUnicos();
+		AmbienteProjetos ambienteProjetos = new AmbienteProjetos();
+		ConfiguracoesProjetos configuracoesProjetos = ambienteProjetos.obterConfiguracoes();
+		String nomeTemporarioDoProjeto = geradorDeNomesUnicos.gerar();
+		File diretorioDosArquivosDoProjeto = configuracoesProjetos.obterDiretorioDosArquivosDoProjeto(nomeDoProjeto);
+		File diretorioDosArquivosDoProjetoTemporario = configuracoesProjetos.obterDiretorioDosArquivosDoProjetoTemporario(nomeTemporarioDoProjeto);
+		File arquivoCompactadoDoProjeto = configuracoesProjetos.obterArquivoCompactadoDoProjeto(nomeDoProjeto);
+		File arquivoCompactadoDoProjetoTemporario = configuracoesProjetos.obterArquivoCompactadoDoProjetoTemporario(nomeTemporarioDoProjeto);
+		manipuladorDeArquivos.escreverArquivo(fluxoDeDados, arquivoCompactadoDoProjetoTemporario);
+		extrairArquivoCompactadoDoProjeto(diretorioDosArquivosDoProjetoTemporario, arquivoCompactadoDoProjetoTemporario);
+		File diretorioTemporarioDoProjetoRaiz = entrarNoPrimeiroDiretorio(diretorioDosArquivosDoProjetoTemporario);
 		removerNaoPermitidos(manipuladorDeArquivos, diretorioTemporarioDoProjetoRaiz);
-		manipuladorDeArquivos.remover(diretorioDoProjeto);
-		diretorioTemporarioDoProjetoRaiz.renameTo(diretorioDoProjeto);
-		manipuladorDeArquivos.remover(diretorioTemporarioDoProjeto);
-		manipuladorDeArquivos.remover(arquivoTemporarioCompactadoDoProjeto);
+		manipuladorDeArquivos.remover(diretorioDosArquivosDoProjeto);
+		manipuladorDeArquivos.criarDiretorio(diretorioDosArquivosDoProjeto);
+		diretorioTemporarioDoProjetoRaiz.renameTo(diretorioDosArquivosDoProjeto);
+		manipuladorDeArquivos.remover(diretorioDosArquivosDoProjetoTemporario);
+		manipuladorDeArquivos.remover(arquivoCompactadoDoProjetoTemporario);
+		manipuladorDeArquivos.remover(arquivoCompactadoDoProjeto);
+		compactarArquivosDoProjeto(nomeDoProjeto, diretorioDosArquivosDoProjeto, arquivoCompactadoDoProjeto);
+	}
+
+	private void compactarArquivosDoProjeto(String nomeDoProjeto, File diretorioDosArquivosDoProjeto, File arquivoCompactadoDoProjeto) throws ZipException {
+		ZipFile arquivoZipCompactadoDoProjeto = new ZipFile(arquivoCompactadoDoProjeto);
+		ZipParameters parametros = new ZipParameters();
+		arquivoZipCompactadoDoProjeto.createZipFileFromFolder(diretorioDosArquivosDoProjeto, parametros, false, 0);
+	}
+
+	private void extrairArquivoCompactadoDoProjeto(File diretorioTemporarioDoProjeto, File arquivoTemporarioCompactadoDoProjeto) throws ZipException {
+		ZipFile arquivoZipCompactadoDoProjetoTemporario = new ZipFile(arquivoTemporarioCompactadoDoProjeto);
+		arquivoZipCompactadoDoProjetoTemporario.extractAll(diretorioTemporarioDoProjeto.getAbsolutePath());
 	}
 
 	private File entrarNoPrimeiroDiretorio(File diretorioTemporarioDoProjeto) throws ExcecaoDeArquivoCompactadoNoFormatoInvalido {
@@ -115,10 +126,6 @@ public class ArquivosPermitidos {
 		if (!incluirArquivo) {
 			manipuladorDeArquivos.remover(arquivo);
 		}
-	}
-
-	private static synchronized Long obterIdentificadorAtual() {
-		return CONTADOR++;
 	}
 
 	private Boolean arquivoDeveSerIncluido(String nome) {

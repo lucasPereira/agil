@@ -1,14 +1,23 @@
-package br.ufsc.inf.leb.projetos.infraestrutura;
+package br.ufsc.inf.leb.projetos.dominio;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+
+import br.ufsc.inf.leb.projetos.AmbienteProjetos;
 
 public class ManipuladorDeArquivos {
 
 	private static final Integer BUFFER = 1024;
 
+	public File carregarArquivo(String pasta, String nome) {
+		File pastaRaiz = new AmbienteProjetos().obterConfiguracoes().obterPastaRaiz();
+		File pastaAtual = new File(pastaRaiz, pasta);
+		File arquivo = new File(pastaAtual, nome);
+		return arquivo;
+	}
+	
 	public File criarArquivo(File diretorioRaiz, String caminho) throws IOException {
 		File arquivo = new File(diretorioRaiz, caminho);
 		arquivo.mkdirs();
@@ -23,19 +32,12 @@ public class ManipuladorDeArquivos {
 		return diretorio;
 	}
 
-	public void criarDiretorio(File diretorioRaiz) throws IOException {
-		diretorioRaiz.mkdirs();
+	public void criarDiretorio(File diretorio) throws IOException {
+		diretorio.mkdirs();
 	}
 
-	public File escreverArquivo(File arquivo, InputStream fluxoDeDados) throws IOException {
-		FileOutputStream saida = new FileOutputStream(arquivo);
-		byte[] buffer = new byte[BUFFER];
-		Integer lidos = 0;
-		while ((lidos = fluxoDeDados.read(buffer, 0, BUFFER)) > 0) {
-			saida.write(buffer, 0, lidos);
-		}
-		saida.flush();
-		saida.close();
+	public File escreverArquivo(InputStream fluxoDeDados, File arquivo) throws IOException {
+		Files.copy(fluxoDeDados, arquivo.toPath());
 		return arquivo;
 	}
 

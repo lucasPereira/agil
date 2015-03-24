@@ -8,7 +8,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
-import br.ufsc.inf.leb.projetos.infraestrutura.CarregadorDeArquivos;
+import br.ufsc.inf.leb.projetos.dominio.ManipuladorDeArquivos;
 
 @Path("/html/{identificador}")
 public class RecursoHtml {
@@ -17,7 +17,7 @@ public class RecursoHtml {
 	@Produces("text/html")
 	public Response colocar(@PathParam("identificador") String identificador) {
 		String nome = String.format("%s.html", identificador);
-		File arquivo = new CarregadorDeArquivos().carregar("html", nome);
+		File arquivo = new ManipuladorDeArquivos().carregarArquivo("html", nome);
 		if (arquivo.exists()) {
 			return Response.status(200).entity(arquivo).build();
 		} else {

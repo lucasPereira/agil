@@ -5,6 +5,7 @@
 		$scope.projeto = {};
 
 		$scope.criar = function () {
+			$scope.carregando = true;
 			$scope.sucesso = false;
 			$scope.erroDoCliente400 = false;
 			$scope.erroDoCliente409 = false;
@@ -17,6 +18,7 @@
 			requisicao.success(function (dados, estado, cabecalhos, configuracoes) {
 				$scope.sucesso = true;
 				$scope.projeto.uri = cabecalhos('location').replace("/projeto/", "/#/projeto/");
+				$scope.carregando = false;
 			});
 			requisicao.error(function (dados, estado, cabecalhos, configuracoes) {
 				if (estado === 409) {
@@ -28,6 +30,7 @@
 				} else {
 					$scope.erroDeResposta = true;
 				}
+				$scope.carregando = false;
 			});
 		}
 	});
