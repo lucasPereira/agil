@@ -21,19 +21,21 @@ import br.ufsc.inf.leb.projetos.AmbienteProjetos;
 import br.ufsc.inf.leb.projetos.dominio.ArquivosPermitidos;
 import br.ufsc.inf.leb.projetos.dominio.ArvoreDoProjeto;
 import br.ufsc.inf.leb.projetos.dominio.ExcecaoDeArquivoCompactadoNoFormatoInvalido;
+import br.ufsc.inf.leb.projetos.dominio.NomeadorDoProjetoNoSistemaDeArquivos;
 import br.ufsc.inf.leb.projetos.entidades.Nodo;
 import br.ufsc.inf.leb.projetos.entidades.Projeto;
 import br.ufsc.inf.leb.projetos.persistencia.BancoDeDocumentos;
 import br.ufsc.inf.leb.projetos.persistencia.RepositorioDeProjetos;
 
-@Path("/projeto/{identificador}/arquivos")
+@Path("/projeto/{identificador: .+}/arquivos")
 public class RecursoProjetoArquivos {
 
 	@GET
 	@Produces("application/json")
 	public Response obterJson(@PathParam("identificador") String identificador) {
 		try {
-			Nodo arquivosEmArvore = new ArvoreDoProjeto().construirArvore(identificador);
+			String nomeDoProjetoNoSistemaDeArquivos = new NomeadorDoProjetoNoSistemaDeArquivos().gerar(identificador);
+			Nodo arquivosEmArvore = new ArvoreDoProjeto().construirArvore(nomeDoProjetoNoSistemaDeArquivos);
 			if (arquivosEmArvore == null) {
 				return Response.status(404).build();
 			}
@@ -60,7 +62,8 @@ public class RecursoProjetoArquivos {
 		}
 		try {
 			ArquivosPermitidos arquivosPermitidos = obterArquivosPermitidos();
-			arquivosPermitidos.salvarArquivos(identificador, arquivoCompactado);
+			String nomeDoProjetoNoSistemaDeArquivos = new NomeadorDoProjetoNoSistemaDeArquivos().gerar(identificador);
+			arquivosPermitidos.salvarArquivos(nomeDoProjetoNoSistemaDeArquivos, arquivoCompactado);
 			Projeto projeto = projetos.get(0);
 			projeto.importarArquivos();
 			bancoDeDocumentos.atualizarDocumento(projeto);

@@ -16,10 +16,10 @@ import br.ufsc.inf.leb.projetos.entidades.Projeto;
 import br.ufsc.inf.leb.projetos.persistencia.BancoDeDocumentos;
 import br.ufsc.inf.leb.projetos.persistencia.RepositorioDeProjetos;
 
-@Path("/projeto/{identificador}")
+@Path("/projeto/{identificador: .+}")
 public class RecursoProjeto {
 
-	private static final String ER_NOME = "([a-zA-Z0-9])+";
+	private static final String ER_NOME = "[a-zA-Z0-9]([a-zA-Z0-9/])*[a-zA-Z0-9]";
 
 	@GET
 	@Produces("application/json")

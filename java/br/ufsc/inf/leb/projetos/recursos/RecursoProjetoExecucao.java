@@ -12,18 +12,20 @@ import javax.ws.rs.core.Response;
 
 import br.ufsc.inf.leb.projetos.AmbienteProjetos;
 import br.ufsc.inf.leb.projetos.ConfiguracoesProjetos;
+import br.ufsc.inf.leb.projetos.dominio.NomeadorDoProjetoNoSistemaDeArquivos;
 import br.ufsc.inf.leb.projetos.entidades.Projeto;
 import br.ufsc.inf.leb.projetos.persistencia.BancoDeDocumentos;
 import br.ufsc.inf.leb.projetos.persistencia.RepositorioDeProjetos;
 
-@Path("/projeto/{identificador}/execucao")
+@Path("/projeto/{identificador: .+}/execucao")
 public class RecursoProjetoExecucao {
 
 	@GET
 	@Path("{arquivo: .+}")
 	public Response obterArquivo(@PathParam("identificador") String identificador, @PathParam("arquivo") String arquivo) {
 		ConfiguracoesProjetos configuracoesProjeto = new AmbienteProjetos().obterConfiguracoes();
-		File arquivoSolicitado = configuracoesProjeto.obterArquivoDeExecucaoDoProjeto(identificador, arquivo);
+		String nomeDoProjetoNoSistemaDeArquivos = new NomeadorDoProjetoNoSistemaDeArquivos().gerar(identificador);
+		File arquivoSolicitado = configuracoesProjeto.obterArquivoDeExecucaoDoProjeto(nomeDoProjetoNoSistemaDeArquivos, arquivo);
 		if (!arquivoSolicitado.exists()) {
 			return Response.status(404).build();
 		}

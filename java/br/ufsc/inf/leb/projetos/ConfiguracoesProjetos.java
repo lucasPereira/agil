@@ -131,11 +131,11 @@ public class ConfiguracoesProjetos {
 	}
 
 	private String obterNomeDeArquivoZip(String prefixo) {
-		return String.format("%s.zip", prefixo);
+		return String.format("%s.zip", prefixo.replaceAll("/", "-"));
 	}
 
 	private String obterNomeDeArquivoJar(String prefixo) {
-		return String.format("%s.jar", prefixo);
+		return String.format("%s.jar", prefixo.replaceAll("/", "-"));
 	}
 
 	private String obterCaminhoDoArquivoClasseRelativoAoPacote() {

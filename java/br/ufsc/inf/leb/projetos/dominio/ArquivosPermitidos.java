@@ -70,6 +70,7 @@ public class ArquivosPermitidos {
 		File diretorioTemporarioDoProjetoRaiz = entrarNoPrimeiroDiretorio(diretorioDosArquivosDoProjetoTemporario);
 		removerNaoPermitidos(manipuladorDeArquivos, diretorioTemporarioDoProjetoRaiz);
 		manipuladorDeArquivos.remover(diretorioDosArquivosDoProjeto);
+		manipuladorDeArquivos.remover(arquivoCompactadoDoProjeto);
 		manipuladorDeArquivos.criarDiretorio(diretorioDosArquivosDoProjeto);
 		diretorioTemporarioDoProjetoRaiz.renameTo(diretorioDosArquivosDoProjeto);
 		manipuladorDeArquivos.remover(diretorioDosArquivosDoProjetoTemporario);

@@ -17,22 +17,23 @@ import br.ufsc.inf.leb.projetos.AmbienteProjetos;
 import br.ufsc.inf.leb.projetos.ConfiguracoesProjetos;
 import br.ufsc.inf.leb.projetos.dominio.ExecutorDeComandos;
 import br.ufsc.inf.leb.projetos.dominio.ManipuladorDeArquivos;
+import br.ufsc.inf.leb.projetos.dominio.NomeadorDoProjetoNoSistemaDeArquivos;
 import br.ufsc.inf.leb.projetos.dominio.Principal;
 import br.ufsc.inf.leb.projetos.entidades.ClassePrincipal;
 import br.ufsc.inf.leb.projetos.entidades.Projeto;
 import br.ufsc.inf.leb.projetos.persistencia.BancoDeDocumentos;
 import br.ufsc.inf.leb.projetos.persistencia.RepositorioDeProjetos;
 
-@Path("/projeto/{identificador}/classePrincipal")
+@Path("/projeto/{identificador: .+}/classePrincipal")
 public class RecursoProjetoClassePrincipal {
 
 	@PUT
 	@Consumes("application/json")
-	public Response obter(@PathParam("identificador") String nomeDoProjeto, ClassePrincipal classePrincipal) throws IOException {
+	public Response obter(@PathParam("identificador") String identificador, ClassePrincipal classePrincipal) throws IOException {
 		AmbienteProjetos ambienteProjetos = new AmbienteProjetos();
 		BancoDeDocumentos bancoDeDocumentos = ambienteProjetos.obterBancoDeDocumentos();
 		RepositorioDeProjetos repositorioDeProjetos = bancoDeDocumentos.obterRepositorioDeProjetos();
-		List<Projeto> projetos = repositorioDeProjetos.obterPorNome(nomeDoProjeto);
+		List<Projeto> projetos = repositorioDeProjetos.obterPorNome(identificador);
 		if (projetos.size() > 1) {
 			return Response.status(409).build();
 		}
@@ -41,15 +42,16 @@ public class RecursoProjetoClassePrincipal {
 		}
 		ConfiguracoesProjetos configuracoes = ambienteProjetos.obterConfiguracoes();
 		ManipuladorDeArquivos manipuladorDeArquivos = new ManipuladorDeArquivos();
-		File arquivoFonteClassePrincipal = configuracoes.obterArquivoFonteDoProjeto(nomeDoProjeto, classePrincipal.obterCaminhoDaClasse());
+		String nomeDoProjetoNoSistemaDeArquivos = new NomeadorDoProjetoNoSistemaDeArquivos().gerar(identificador);
+		File arquivoFonteClassePrincipal = configuracoes.obterArquivoFonteDoProjeto(nomeDoProjetoNoSistemaDeArquivos, classePrincipal.obterCaminhoDaClasse());
 		if (!arquivoFonteClassePrincipal.exists()) {
 			return Response.status(404).build();
 		}
-		File diretorioDosBinarios = configuracoes.obterDiretorioDosBinariosDoProjeto(nomeDoProjeto);
-		File diretorioDosFontes = configuracoes.obterDiretorioDosFontesDoProjeto(nomeDoProjeto);
-		File diretorioDasBibliotecas = configuracoes.obterDiretorioDasBibliotecasDoProjeto(nomeDoProjeto);
-		File diretorioDeExecucao = configuracoes.obterDiretorioDeExecucaoDoProjeto(nomeDoProjeto);
-		File arquivoJar = configuracoes.obterArquivoJarDoProjeto(nomeDoProjeto);
+		File diretorioDosBinarios = configuracoes.obterDiretorioDosBinariosDoProjeto(nomeDoProjetoNoSistemaDeArquivos);
+		File diretorioDosFontes = configuracoes.obterDiretorioDosFontesDoProjeto(nomeDoProjetoNoSistemaDeArquivos);
+		File diretorioDasBibliotecas = configuracoes.obterDiretorioDasBibliotecasDoProjeto(nomeDoProjetoNoSistemaDeArquivos);
+		File diretorioDeExecucao = configuracoes.obterDiretorioDeExecucaoDoProjeto(nomeDoProjetoNoSistemaDeArquivos);
+		File arquivoJar = configuracoes.obterArquivoJarDoProjeto(nomeDoProjetoNoSistemaDeArquivos);
 		manipuladorDeArquivos.remover(diretorioDosBinarios);
 		manipuladorDeArquivos.remover(diretorioDeExecucao);
 		manipuladorDeArquivos.criarDiretorio(diretorioDosBinarios);
@@ -65,7 +67,7 @@ public class RecursoProjetoClassePrincipal {
 			if (!compactou) {
 				return Response.status(500).build();
 			}
-			criarClassePrincipalDoApplet(nomeDoProjeto, manipuladorDeArquivos, configuracoes, diretorioDosBinarios);
+			criarClassePrincipalDoApplet(identificador, manipuladorDeArquivos, configuracoes, diretorioDosBinarios);
 			atualizarProjeto(classePrincipal, bancoDeDocumentos, projetos);
 			return Response.status(200).build();
 		} catch (InterruptedException excecao) {

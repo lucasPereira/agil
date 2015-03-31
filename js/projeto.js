@@ -46,20 +46,44 @@
 			return '/projeto/' + $route.current.params.identificador + "/arquivos.zip";
 		}
 
+		$scope.obterUriDoProjeto = function () {
+			return '/projeto/' + $route.current.params.identificador;
+		}
+
+		$scope.obterUriDosArquivos = function () {
+			return '/projeto/' + $route.current.params.identificador + "/arquivos";
+		}
+
+		$scope.obterUriDeImportacao = function () {
+			return '/projeto/' + $route.current.params.identificador + "/arquivos";
+		}
+
 		$scope.obterUriDoArquivoAtual = function () {
 			return '/projeto/' + $route.current.params.identificador + "/arquivo/" + $route.current.params.caminho;
 		}
 
+		$scope.obterUriDaClassePrincipal = function () {
+			return '/projeto/' + $route.current.params.identificador + '/classePrincipal';
+		}
+
+		$scope.obterUriDoDiretorioAnterior = function () {
+			return '/#/projeto/' + $scope.pilha[$scope.pilha.length - 1].caminho.replace($scope.projeto.nome, $scope.projeto.nome + '/arquivo').replace(/\/arquivo$/, '');
+		}
+
+		$scope.obterUriDoArquivoAtual = function () {
+			return '/#/projeto/' + $scope.arquivoAtual.caminho.replace($scope.projeto.nome, $scope.projeto.nome + '/arquivo');
+		}
+
 		function buscarProjeto() {
 			$scope.carregando = true;
-			var requisicao = $http({method: 'GET', url: '/projeto/' + $route.current.params.identificador, headers: {'Accept': 'application/json'}});
+			var requisicao = $http({method: 'GET', url: $scope.obterUriDoProjeto(), headers: {'Accept': 'application/json'}});
 			requisicao.success(receberProjetoComSucesso);
 			requisicao.error(receberProjetoComErro);
 		}
 
 		function buscarArquivosDoProjeto() {
 			$scope.carregando = true;
-			var requisicao = $http({method: 'GET', url: '/projeto/' + $route.current.params.identificador + '/arquivos', headers: {'Accept': 'application/json'}});
+			var requisicao = $http({method: 'GET', url: $scope.obterUriDosArquivos(), headers: {'Accept': 'application/json'}});
 			requisicao.success(receberArquivosDoProjetoComSucesso);
 			requisicao.error(receberArquivosDoProjetoComErro);
 		}
@@ -67,7 +91,7 @@
 		$scope.salvarClassePrincipal = function () {
 			$scope.carregando = true;
 			if ($scope.classePrincipalSelecionada) {
-				var requisicao = $http({method: 'PUT', url: '/projeto/' + $route.current.params.identificador + '/classePrincipal', data: $scope.classePrincipalSelecionada, headers: {'Content-Type': 'application/json'}});
+				var requisicao = $http({method: 'PUT', url: $scope.obterUriDaClassePrincipal(), data: $scope.classePrincipalSelecionada, headers: {'Content-Type': 'application/json'}});
 				requisicao.success(fixarClassePrincipalComSucesso);
 				requisicao.error(fixarClassePrincipalComErro);
 			}
@@ -78,11 +102,36 @@
 			if ($scope.projeto.classePrincipal === undefined) {
 				$scope.projeto.classePrincipal = null;
 			}
+			$scope.projeto.nomeDeExibicao = $scope.projeto.nome.split("/").pop();
 			$scope.uriCaminho = $route.current.params.identificador + "/" + $route.current.params.caminho;
 			$scope.projetoSucesso = true;
 			document.querySelector('#selecaoDeProjeto').addEventListener('change', importarSelecionarArquivo, false);
 			buscarArquivosDoProjeto();
+			montarBreadcrumb();
 			$scope.carregando = false;
+			if ($location.search().importar) {
+				console.log('Abrir importação');
+				$scope.abrirImportacaoDeProjeto();
+			}
+		}
+
+		function montarBreadcrumb() {
+			$scope.breadcrumb = [];
+			var indice;
+			var caminho = $route.current.params.identificador;
+			if (caminho !== null && caminho !== undefined) {
+				var partesDoBreadcrumb = caminho.split("/");
+				var uri = "/#/projetos";
+				for (indice in partesDoBreadcrumb) {
+					var itemDoBreadcrumb = partesDoBreadcrumb[indice];
+					uri = uri + "/" + itemDoBreadcrumb;
+					$scope.breadcrumb.push({
+						nome: itemDoBreadcrumb,
+						uri: uri
+					});
+				}
+			}
+			$scope.breadcrumb.pop();
 		}
 
 		function receberProjetoComErro(dados, estado, cabecalhos, configuracoes) {
@@ -205,6 +254,7 @@
 			}
 			return null;
 		}
+
 		$scope.abrirImportacaoDeProjeto = function () {
 			inicializarVariaveisImportacao();
 			document.querySelector("#selecaoDeProjeto").click();
@@ -252,7 +302,7 @@
 			requisicao.addEventListener('timeout', importacaoEstouroDeTempo, false);
 			requisicao.addEventListener('load', importacaoSucesso, false);
 			requisicao.upload.addEventListener('progress', importacaoProgresso, false);
-			requisicao.open('PUT', $location.path() + '/arquivos', true);
+			requisicao.open('PUT', $scope.obterUriDeImportacao(), true);
 			requisicao.send(dadosDoFormulario);
 		}
 

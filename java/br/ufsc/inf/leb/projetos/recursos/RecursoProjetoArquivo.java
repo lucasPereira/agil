@@ -10,15 +10,17 @@ import javax.ws.rs.core.Response;
 
 import br.ufsc.inf.leb.projetos.AmbienteProjetos;
 import br.ufsc.inf.leb.projetos.ConfiguracoesProjetos;
+import br.ufsc.inf.leb.projetos.dominio.NomeadorDoProjetoNoSistemaDeArquivos;
 
-@Path("/projeto/{identificador}/arquivo/{caminho: .+}")
+@Path("/projeto/{identificador: .+}/arquivo/{caminho: .+}")
 public class RecursoProjetoArquivo {
 
 	@GET
 	@Produces("application/octet-stream")
-	public Response obter(@PathParam("identificador") String nomeDoProjeto, @PathParam("caminho") String caminho) {
+	public Response obter(@PathParam("identificador") String identificador, @PathParam("caminho") String caminho) {
 		ConfiguracoesProjetos configuracoesProjeto = new AmbienteProjetos().obterConfiguracoes();
-		File arquivoSolicitado = configuracoesProjeto.obterArquivoDoProjeto(nomeDoProjeto, caminho);
+		String nomeDoProjetoNoSistemaDeArquivos = new NomeadorDoProjetoNoSistemaDeArquivos().gerar(identificador);
+		File arquivoSolicitado = configuracoesProjeto.obterArquivoDoProjeto(nomeDoProjetoNoSistemaDeArquivos, caminho);
 		if (!arquivoSolicitado.exists()) {
 			return Response.status(404).build();
 		}

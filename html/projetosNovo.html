@@ -11,7 +11,7 @@
 		<label for="nome">Nome</label>
 		<div class="input-group">
 			<div class="input-group-addon">/projetos/</div>
-			<input type="text" class="form-control" ng-model="projeto.nome" name="nome" placeholder="Nome" ng-pattern="/^[a-zA-Z0-9]+$/" required />
+			<input type="text" class="form-control" ng-model="projeto.nome" name="nome" placeholder="Nome" ng-pattern="/^[a-zA-Z0-9]([a-zA-Z0-9/])*[a-zA-Z0-9]$/" required />
 		</div>
 		<p class="help-block" ng-if="projetoFormulario.nome.$error.required">O nome deve ser preenchido.</p>
 		<p class="help-block" ng-if="projetoFormulario.nome.$error.pattern">O nome deve conter apenas letras e números</p>

@@ -27,3 +27,13 @@ pre {
 .carregamento {
 	text-align: center;
 }
+
+th:first-child,
+td:first-child {
+	width: 99%;
+}
+
+th:not(:first-child),
+td:not(:first-child) {
+	white-space: nowrap;
+}

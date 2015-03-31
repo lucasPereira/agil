@@ -10,16 +10,18 @@ import javax.ws.rs.core.Response;
 
 import br.ufsc.inf.leb.projetos.AmbienteProjetos;
 import br.ufsc.inf.leb.projetos.ConfiguracoesProjetos;
+import br.ufsc.inf.leb.projetos.dominio.NomeadorDoProjetoNoSistemaDeArquivos;
 
-@Path("/projeto/{identificador}/arquivos.zip")
+@Path("/projeto/{identificador: .+}/arquivos.zip")
 public class RecursoProjetoArquivosZip {
 
 	@GET
 	@Produces("application/zip")
-	public Response obterZip(@PathParam("identificador") String nomeDoProjeto) {
+	public Response obterZip(@PathParam("identificador") String identificador) {
 		AmbienteProjetos ambienteProjetos = new AmbienteProjetos();
 		ConfiguracoesProjetos configuracoes = ambienteProjetos.obterConfiguracoes();
-		File arquivoCompactadoDoProjeto = configuracoes.obterArquivoCompactadoDoProjeto(nomeDoProjeto);
+		String nomeDoProjetoNoSistemaDeArquivos = new NomeadorDoProjetoNoSistemaDeArquivos().gerar(identificador);
+		File arquivoCompactadoDoProjeto = configuracoes.obterArquivoCompactadoDoProjeto(nomeDoProjetoNoSistemaDeArquivos );
 		if (!arquivoCompactadoDoProjeto.exists()) {
 			return Response.status(404).build();
 		}

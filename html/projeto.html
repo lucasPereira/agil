@@ -19,9 +19,14 @@
 <div class="alert alert-warning" ng-if="classePrincipalErroDeCompilacao"><p>Erro ao fixar a classe principal. Certifique-se de que o seu projeto compila. Caso esteja utilizando bibliotecas, certifique-se de que elas estejam na pasta <code>libs</code>.</p></div>
 <div class="alert alert-warning" ng-if="classePrincipalErroDeResposta"><p>Resposta inesperada do servidor.</p></div>
 
+<ol ng-if="breadcrumb.length > 0" class="breadcrumb">
+	<li><a href="/#/projetos"><span class="glyphicon glyphicon-home"></span></a></li>
+	<li ng-repeat="item in breadcrumb"><a href="{{item.uri}}">{{item.nome}}</a></li>
+</ol>
+
 <div ng-hide="!projetoSucesso">
 	<div class="page-header">
-		<h1>{{projeto.nome}} <small><time>{{projeto.ultimaAtualizacao | date: 'dd/MM/y HH:mm'}}</time></small></h1>
+		<h1>{{projeto.nomeDeExibicao}} <small><time>{{projeto.ultimaAtualizacao | date: 'dd/MM/y HH:mm'}}</time></small></h1>
 	</div>
 
 	<div class="panel panel-default">
@@ -30,7 +35,7 @@
 				<form id="formularioImportacao" class="navbar-form navbar-left" novalidate>
 					<div class="form-group">
 						<div class="btn-group">
-							<button type="button" class="btn btn-default" ng-click="abrirImportacaoDeProjeto()"><span class="glyphicon glyphicon glyphicon-cloud-upload"></span> Atualizar</button>
+							<button type="button" id="botaoImportar" class="btn btn-default" ng-click="abrirImportacaoDeProjeto()"><span class="glyphicon glyphicon glyphicon-cloud-upload"></span> Atualizar</button>
 							<a target="_blank" type="application/zip" class="btn btn-default" href="{{obterUriDeExportacao()}}" ng-disabled="arquivosNaoEncontrado"><span class="glyphicon glyphicon-cloud-download"></span> Exportar</a>
 						</div>
 						<div class="btn-group">
@@ -61,8 +66,8 @@
 			</div>
 			<ol class="breadcrumb" ng-if="arquivoAtual">
 				<li><a href="/#/projeto/{{projeto.nome}}"><span class="glyphicon glyphicon-home"></span></a></li>
-				<li ng-if="!estaNoInicio()"><a href="/#/projeto/{{pilha[pilha.length - 1].caminho}}">..</a></li>
-				<li ng-if="!estaNoInicio()"><a href="/#/projeto/{{arquivoAtual.caminho}}">{{arquivoAtual.nome}}</a></li>
+				<li ng-if="!estaNoInicio()"><a href="{{obterUriDoDiretorioAnterior()}}">..</a></li>
+				<li ng-if="!estaNoInicio()"><a href="{{obterUriDoArquivoAtual()}}">{{arquivoAtual.nome}}</a></li>
 			</ol>
 			<p ng-if="arquivosNaoEncontrado">Nenhum arquivo.</p>
 			<p ng-if="arquivoAtual && !arquivoAtual.diretorio && !arquivoAtual.conteudo">Não existe nenhuma visualização disponível para esse arquivo, mas você pode <a href="{{obterUriDoArquivoAtual()}}">abri-lo diretamente através do seu navegador</a>.</p>
@@ -71,7 +76,7 @@
 		<pre ng-if="!arquivoAtual.diretorio && arquivoAtual.conteudo">{{arquivoAtual.conteudo}}</pre>
 
 		<div ng-if="arquivoAtual.diretorio && arquivoAtual.filhos && arquivoAtual.filhos.length > 0" class="list-group" >
-			<a ng-repeat="filho in arquivoAtual.filhos | filter: busca | orderBy: ['-diretorio', '-nome']" ng-click="entrar(filho)" class="list-group-item" href="/#/projeto/{{filho.caminho}}">
+			<a ng-repeat="filho in arquivoAtual.filhos | filter: busca | orderBy: ['-diretorio', '-nome']" ng-click="entrar(filho)" class="list-group-item" href="/#/projeto/{{filho.caminho.replace(projeto.nome, projeto.nome + '/arquivo')}}">
 				<span ng-if="!filho.diretorio" class="glyphicon glyphicon-file"></span>
 				<span ng-if="filho.diretorio" class="glyphicon glyphicon-folder-close"></span>
 				{{filho.nome}}

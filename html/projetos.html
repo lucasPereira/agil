@@ -2,6 +2,11 @@
 
 <div class="alert alert-warning" ng-if="erroDeResposta"><p>Resposta inesperada do servidor.</p></div>
 
+<ol ng-if="breadcrumb.length > 0" class="breadcrumb">
+	<li><a href="/#/projetos"><span class="glyphicon glyphicon-home"></span></a></li>
+	<li ng-repeat="item in breadcrumb"><a href="{{item.uri}}">{{item.nome}}</a></li>
+</ol>
+
 <form class="navbar-form navbar-right" novalidate>
 	<div class="form-group">
 		<label for="busca" class="sr-only">Busca</label>
@@ -12,7 +17,22 @@
 	</div>
 </form>
 
-<table class="table">
+<table class="table" ng-if="diretorios.length > 0">
+	<thead>
+		<tr>
+			<th>Diretório</th>
+			<th>Última atualização</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="diretorio in diretorios | filter: busca | orderBy: '-ultimaAtualizacao'">
+			<td><a href="/#/projetos/{{diretorio.nome}}">{{diretorio.nomeDeExibicao}}</a></td>
+			<td><time datetime="{{diretorio.ultimaAtualizacao">{{diretorio.ultimaAtualizacao | date: 'dd/MM/y HH:mm'}}</time></td>
+		</tr>
+	</tbody>
+</table>
+
+<table class="table" ng-if="projetos.length > 0">
 	<thead>
 		<tr>
 			<th>Projeto</th>
@@ -21,7 +41,7 @@
 	</thead>
 	<tbody>
 		<tr ng-repeat="projeto in projetos | filter: busca | orderBy: '-ultimaAtualizacao'">
-			<td><a href="/#/projeto/{{projeto.nome}}">{{projeto.nome}}</a></td>
+			<td><a href="/#/projeto/{{projeto.nome}}">{{projeto.nomeDeExibicao}}</a></td>
 			<td><time datetime="{{projeto.ultimaAtualizacao">{{projeto.ultimaAtualizacao | date: 'dd/MM/y HH:mm'}}</time></td>
 		</tr>
 	</tbody>
