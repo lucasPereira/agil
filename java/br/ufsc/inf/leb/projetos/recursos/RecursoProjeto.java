@@ -47,6 +47,9 @@ public class RecursoProjeto {
 		if (!identificador.matches(ER_NOME)) {
 			return Response.status(400).build();
 		}
+		if (existeDiretorioComNomeDeProjeto(identificador, repositorioDeProjetos)) {
+			return Response.status(409).build();
+		}
 		Projeto projeto = new Projeto(identificador);
 		bancoDeDocumentos.inserirDocumento(projeto);
 		List<Projeto> projetos = repositorioDeProjetos.obterPorNome(identificador);
@@ -58,4 +61,17 @@ public class RecursoProjeto {
 		return Response.status(201).location(uri).build();
 	}
 
+	private Boolean existeDiretorioComNomeDeProjeto(String identificador, RepositorioDeProjetos repositorioDeProjetos) {
+		String[] nomes = identificador.split("/");
+		String nomeAtual = "";
+		for (String nome : nomes) {
+			nomeAtual += nome;
+			List<Projeto> projetos = repositorioDeProjetos.obterPorNome(nomeAtual);
+			if (!projetos.isEmpty()) {
+				return true;
+			}
+			nomeAtual += "/";
+		}
+		return false;
+	}
 }

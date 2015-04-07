@@ -34,6 +34,10 @@
 			controller: 'ProjetoControle'
 		});
 
+		$routeProvider.when("/ajuda", {
+			templateUrl: '/html/ajuda'
+		});
+
 	}]);
 
 }());

@@ -9,6 +9,7 @@ import br.ufsc.inf.leb.projetos.recursos.RecursoFonts;
 import br.ufsc.inf.leb.projetos.recursos.RecursoGif;
 import br.ufsc.inf.leb.projetos.recursos.RecursoHtml;
 import br.ufsc.inf.leb.projetos.recursos.RecursoJs;
+import br.ufsc.inf.leb.projetos.recursos.RecursoPng;
 import br.ufsc.inf.leb.projetos.recursos.RecursoProjeto;
 import br.ufsc.inf.leb.projetos.recursos.RecursoProjetoArquivo;
 import br.ufsc.inf.leb.projetos.recursos.RecursoProjetoArquivos;
@@ -33,6 +34,7 @@ public class AplicacaoProjetos extends ResourceConfig {
 		register(RecursoProjetoClassePrincipal.class);
 		register(RecursoProjetoExecucao.class);
 		register(RecursoProjetos.class);
+		register(RecursoPng.class);
 		register(RecursoRaiz.class);
 		register(FabricaDeMapeadoresDoJersey.class);
 		register(MultiPartFeature.class);
