@@ -70,7 +70,7 @@
 				<li ng-if="!estaNoInicio()"><a href="{{obterUriDoArquivoAtual()}}">{{arquivoAtual.nome}}</a></li>
 			</ol>
 			<p ng-if="arquivosNaoEncontrado">Nenhum arquivo.</p>
-			<p ng-if="arquivoAtual && !arquivoAtual.diretorio && !arquivoAtual.conteudo">Não existe nenhuma visualização disponível para esse arquivo, mas você pode <a href="{{obterUriDoArquivoAtual()}}">abri-lo diretamente através do seu navegador</a>.</p>
+			<p ng-if="arquivoAtual && !arquivoAtual.diretorio && !arquivoAtual.conteudo">Não existe nenhuma visualização disponível para esse arquivo, mas você pode <a href="{{obterUriDoArquivoAtualParaDownload()}}">abri-lo diretamente através do seu navegador</a>.</p>
 		</div>
 
 		<pre ng-if="!arquivoAtual.diretorio && arquivoAtual.conteudo">{{arquivoAtual.conteudo}}</pre>

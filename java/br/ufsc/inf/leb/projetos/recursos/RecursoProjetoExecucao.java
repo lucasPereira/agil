@@ -2,6 +2,7 @@ package br.ufsc.inf.leb.projetos.recursos;
 
 import java.io.File;
 import java.net.URI;
+import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -65,7 +66,8 @@ public class RecursoProjetoExecucao {
 		html.append("\n");
 		html.append(String.format("codebase=\"%s\"", uriDeExecucao.toASCIIString()));
 		html.append("\n");
-		html.append(String.format("archive=\"%s.jar\"", identificador));
+		ConfiguracoesProjetos configuracoes = ambienteProjetos.obterConfiguracoes();
+		html.append(String.format("archive=\"%s?versao=%d\"", configuracoes.obterArquivoJarDoProjeto(identificador).getName(), new Date().getTime()));
 		html.append("\n");
 		html.append("code=\"br.ufsc.inf.leb.projetos.dominio.Principal.class\"");
 		html.append("\n");

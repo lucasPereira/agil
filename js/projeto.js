@@ -58,7 +58,7 @@
 			return '/projeto/' + $route.current.params.identificador + "/arquivos";
 		}
 
-		$scope.obterUriDoArquivoAtual = function () {
+		$scope.obterUriDoArquivoAtualParaDownload = function () {
 			return '/projeto/' + $route.current.params.identificador + "/arquivo/" + $route.current.params.caminho;
 		}
 
@@ -226,7 +226,7 @@
 					adicionarClasses(filho, classes);
 				} else {
 					var classe = {
-						nome: filho.caminho.replace(/\//g, '.').replace($scope.arquivoRaiz.nome + '.src.', '').replace(/\.java$/, ''),
+						nome: filho.caminho.replace(/\//g, '.').replace($scope.arquivoRaiz.nome.replace(/\//g, '.') + '.src.', '').replace(/\.java$/, ''),
 						caminho: filho.caminho
 					}
 					if ($scope.projeto.classePrincipal === classe.nome) {
