@@ -1,11 +1,26 @@
-<h1>Ajuda</h1>
+<div class="page-header">
+	<h1>Ajuda</h1>
+</div>
+<ul>
+	<li><a href="/#/ajuda#importando">Importando um projeto para o ambiente</a></li>
+	<li><a href="/#/ajuda#exportando">Exportanto um projeto do Eclipse para um arquivo zip</a></li>
+	<li><a href="/#/ajuda#problemaUtf8">Codificação UTF-8 (problema de compilação)</a></li>
+	<li><a href="/#/ajuda#problemaBibliotecasFaltando">Bibliotecas faltando (problema de compilação)</a></li>
+	<li><a href="/#/ajuda#problemaJFrameSetDefaultCloseOperation">Fechar janelas do Swing (problema de execução)</a></li>
+	<li><a href="/#/ajuda#problemaMain">Classe sem o método <samp>main</samp> (problema de execução)</a></li>
+	<li><a href="/#/ajuda#problemaVersaoDoJava">Versão do Java (problema de compilação e execução)</a></li>
+</ul>
 
-<h2>Importando um projeto para o ambiente</h2>
+<div class="page-header">
+	<h2 id="importando">Importando um projeto para o ambiente</h2>
+</div>
 <p>Para importar um projeto é necessário compactar, em um arquivo <samp>.zip</samp>, o diretório raiz com todos os arquivos do seu projeto. Por exemplo, se o diretório raiz do seu projeto for <samp>/home/fulano/projetos/meuMaisNovoProjeto/</samp>, então o diretório <samp>meuMaisNovoProjeto</samp> precisará ser interiramente compactado em um arquivo zip (o diretório <samp>meuMaisNovoProjeto</samp> deverá estar na raiz do arquivo <samp>.zip</samp>). A organização recomendada para a estrutura do seu projeto é mostrada na imagem abaixo. Essa organização deve ser seguida para que seja possível executar o projeto através do navegador. O tamanho máximo permitido para o arquivo <samp>.zip</samp> é de 50Mb.</p>
 <img src="png/estruturaDoProjeto" alt="Estrutura de diretórios aceita na importação" />
 <p>Perceba que no diretório <samp>src</samp> apenas serão aceitos arquivos <samp>.java</samp> (arquivos diferente disso serão ignorados). De forma análoga, no diretório <samp>libs</samp> apenas serão aceitos arquivos <samp>.jar</samp>. Já no caso do diretório <samp>resources</samp> é possível enviar qualquer tipo de arquivo. Além dos arquivos mostrados na imagem acima, também serão considerados arquivos de configuração de algumas IDEs. As IDEs suportadas são Eclipse e NetBeans, mas caso você utilize alguma outra IDE, basta entrar em contato para que ela também seja suportada por este ambiente.</p>
 
-<h2>Exportanto um projeto do Eclipse para um arquivo zip</h2>
+<div class="page-header">
+	<h2 id="exportando">Exportanto um projeto do Eclipse para um arquivo zip</h2>
+</div>
 <ol>
 	<li>Vá no menu File > Export...</li>
 	<li>Selecione a opção General > Archive File.</li>
@@ -15,3 +30,41 @@
 	<li>Clique em Finish.</li>
 </ol>
 <img src="png/exportarProjetoNoEclipse" alt="Estrutura de diretórios aceita na importação" />
+
+<div class="page-header">
+	<h2 id="problemaUtf8">Codificação UTF-8 <small>problema de compilação</small></h2>
+</div>
+<p>Se você utiliza Windows, provavelmente seus arquivos Java estarão compactados com uma codificação diferente de UTF-8. Assim, ao tentar compilar seu programa, não será possível, pois o servidor espera que seus arquivos estejam codificados com UTF-8.</p>
+<p>Para resolver esse problema, você precisa configurar o seu editor para que os arquivos Java sejam salvos como UTF-8. Perceba que ao alterar a configuração do seu editor, é possível que alguns caracteres não tenham sidos convertidos corretamente. Nesses casos, você ainda continuará impossibilitado de compilar o projeto e deverá alterar os caracteres inválidos manualmente. Para evitar esse problema, sempre que iniciar um projeto, configure o seu editor para utilizar UTF-8.</p>
+<p>Para configurar o Eclipse para utilizar UTF-8 no seu projeto, siga os seguintes passos:</p>
+<ol>
+	<li>Clique com o botão direito no seu projeto.</li>
+	<li>Selecione a opção Properties.</li>
+	<li>Selecione Resource.</li>
+	<li>Habilite a caixa de seleção Other.</li>
+	<li>Selecione a opção UTF-8.</li>
+	<li>Clique em Apply e depois em OK.</li>
+</ol>
+<img src="png/corrigirProblemaDeUtf8" alt="Corrigindo problema de condificação inválida no Eclipse" />
+
+<div class="page-header">
+	<h2 id="problemaBibliotecasFaltando">Bibliotecas faltando <small>problema de compilação</small></h2>
+</div>
+<p>Para que seu projeto possa ser compilado é necessário incluir na pasta <samp>libs</samp>, na raiz do seu projeto, todas as bibliotecas do qual o seu projeto depende. Isso deverá ser feito também para as bibliotecas JUnit e Hamcrest. Perceba que algumas IDEs gerenciam essas bibliotecas automaticamente para você. Por isso, se você não incluir essas bibliotecas na pasta <samp>libs</samp>, o seu projeto não compilará através do ambiente (mesmo que esteja compilando localmente em seu computador). Você pode baixar as bibliotecas JUnit e Hamcrest <a href="http://agil.inf.ufsc.br/#/projeto/lucasPereira/interfaceGraficaComJunit/arquivo/libs">nesse projeto</a>.</p>
+<p>Não esqueça que os arquivos <samp>.jar</samp> com suas bibliotecas devem estar compilados e devem conter os arquivos <samp>.class</samp>. Caso você envie um arquivo <samp>.jar</samp> com arquivos <samp>.java</samp>, então a compilação no servidor não irá funcionar.</p>
+
+<div class="page-header">
+	<h2 id="problemaJFrameSetDefaultCloseOperation">Fechar janelas do Swing <small>problema de execução</small></h2>
+</div>
+<p>Para que seu projeto possa ser executado através de um <i lang="en">applet</i> é necessário que ele respeite as restrições impostas para <i lang="en">applets</i>. Programas rodando em <i lang="en">applets</i> não possuem permissão para encerrar a máquina virtual. A opção <code>JFrame.setDefaultCloseOperation(JFrame.<strong>EXIT_ON_CLOSE</strong>)</code>, faz justamente isso, encerra a máquina virtual. Para resolver esse problema e conseguir executar o seu projeto através do ambiente <i lang="en">Web</i>, utilize a opção <code>JFrame.setDefaultCloseOperation(JFrame.<strong>DISPOSE_ON_CLOSE</strong>)</code>. Através desse método a janela de sua interface gráfica será eliminada e o fluxo de execução seguirá normalmente até que o seu programa seja encerrado naturalmente (o que deve acontecer logo após a sua janela ser fechada).</p>
+
+<div class="page-header">
+	<h2 id="problemaMain">Classe sem o método <samp>main</samp> <small>problema de execução</small></h2>
+</div>
+<p>Seu projeto somente será executado corretamente através do <i lang="en">applet</i> se a classe que você definiu como principal no momento da compilação através do ambiente <i lang="en">Web</i> tiver um método estático chamado <samp>main</samp>. A assinatura do seu método <samp>main</samp> deve ser a seguinte <code>public static void main(String[] argumentos)</code>.</p>
+
+<div class="page-header">
+	<h2 id="problemaVersaoDoJava">Versão do Java <small>problema de compilação e execução</small></h2>
+</div>
+<p>Ao tentar compilar um projeto através deste ambiente <i lang="en">Web</i> você deverá se certificar que seu projeto compila com a versão 8 do Java. Além disso, para executar o seu projeto através do navegador é necessário que você tenha instalado o Java 8 ou superior. Outro fator importante é que navegadores como o Google Chrome abandonaram o suporte aos <i lang="en">applets</i>. Dessa forma, dependendo da sua versão do navegador, os <i lang="en">applets</i> poderão não funcionar. Até o momento, o navegador com melhor suporte aos <i lang="en">applets</i> é o <a href="http://mozilla.org/pt-BR/firefox">Firefox</a>.</p>
+<p>Se você usa Ubuntu e o Java 8 não estiver disponível nos repositórios oficiais, então poderá instalar o Java 8 através desse <a href="http://www.webupd8.org/2012/09/install-oracle-java-8-in-ubuntu-via-ppa.html">PPA</a>.</p>
