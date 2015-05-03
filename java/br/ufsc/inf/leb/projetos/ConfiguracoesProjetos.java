@@ -80,6 +80,14 @@ public class ConfiguracoesProjetos {
 		return new File(obterDiretorioDoDoProjeto(nomeDoProjeto), "execucao");
 	}
 
+	public File obterDiretorioDasBibliotecasDeExecucaoDoProjeto(String nomeDoProjeto) {
+		return new File(obterDiretorioDeExecucaoDoProjeto(nomeDoProjeto), "libs");
+	}
+
+	public File obterArquivoDaBibliotecasDeExecucaoDoProjeto(String nomeDoProjeto, String nomeDaBiblioteca) {
+		return new File(obterDiretorioDasBibliotecasDeExecucaoDoProjeto(nomeDoProjeto), nomeDaBiblioteca);
+	}
+
 	public File obterDiretorioDosFontesDoProjeto(String nomeDoProjeto) {
 		return new File(obterDiretorioDosArquivosDoProjeto(nomeDoProjeto), "src");
 	}

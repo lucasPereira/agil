@@ -1,7 +1,6 @@
 package br.ufsc.inf.leb.projetos.recursos;
 
 import java.io.File;
-import java.net.URI;
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +9,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
 
 import br.ufsc.inf.leb.projetos.AmbienteProjetos;
 import br.ufsc.inf.leb.projetos.ConfiguracoesProjetos;
@@ -46,7 +46,18 @@ public class RecursoProjetoExecucao {
 		if (projetos.size() < 1) {
 			return Response.status(404).build();
 		}
-		URI uriDeExecucao = ambienteProjetos.obterConfiguracoes().coonstruirUri(RecursoProjetoExecucao.class, identificador);
+		ConfiguracoesProjetos configuracoes = ambienteProjetos.obterConfiguracoes();
+		String uriDeExecucao = ambienteProjetos.obterConfiguracoes().coonstruirUri(RecursoProjetoExecucao.class, identificador).toASCIIString();
+		String uriJarDoProjeto = configuracoes.obterArquivoJarDoProjeto(identificador).getName();
+		String urisDasBibliotecasJarDoProjeto = "";
+		File uriDasBibliotecas = configuracoes.obterDiretorioDasBibliotecasDeExecucaoDoProjeto(identificador);
+		for (File biblioteca : uriDasBibliotecas.listFiles()) {
+			urisDasBibliotecasJarDoProjeto = ", ";
+			urisDasBibliotecasJarDoProjeto += UriBuilder.fromPath(uriDasBibliotecas.getName()).path(biblioteca.getName()).build().getPath();
+		}
+		Long versaoDoProjeto = new Date().getTime();
+		String nomeDaClassePrincipal = projetos.get(0).obterClassePrincipal();
+
 		StringBuilder html = new StringBuilder();
 		html.append("<!DOCTYPE html>");
 		html.append("\n");
@@ -64,14 +75,13 @@ public class RecursoProjetoExecucao {
 		html.append("\n");
 		html.append("<applet");
 		html.append("\n");
-		html.append(String.format("codebase=\"%s\"", uriDeExecucao.toASCIIString()));
+		html.append(String.format("codebase=\"%s\"", uriDeExecucao));
 		html.append("\n");
-		ConfiguracoesProjetos configuracoes = ambienteProjetos.obterConfiguracoes();
-		html.append(String.format("archive=\"%s?versao=%d\"", configuracoes.obterArquivoJarDoProjeto(identificador).getName(), new Date().getTime()));
+		html.append(String.format("archive=\"%s?versao=%d%s\"", uriJarDoProjeto, versaoDoProjeto, urisDasBibliotecasJarDoProjeto));
 		html.append("\n");
 		html.append("code=\"br.ufsc.inf.leb.projetos.dominio.Principal.class\"");
 		html.append("\n");
-		html.append(String.format("><param name=\"classePrincipal\" value=\"%s\" /></applet>", projetos.get(0).obterClassePrincipal()));
+		html.append(String.format("><param name=\"classePrincipal\" value=\"%s\" /></applet>", nomeDaClassePrincipal));
 		html.append("\n");
 		html.append("</body>");
 		html.append("\n");

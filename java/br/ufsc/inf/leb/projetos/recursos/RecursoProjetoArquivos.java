@@ -78,6 +78,7 @@ public class RecursoProjetoArquivos {
 		return new ArquivosPermitidos()
 				.permitirArquivo(".classpath")
 				.permitirArquivo(".project")
+				.permitirArquivo("build.xml")
 				.permitirDiretorio("test", new ArquivosPermitidos()
 						.permitirArquivosComExtensao("java")
 						.recursivo())

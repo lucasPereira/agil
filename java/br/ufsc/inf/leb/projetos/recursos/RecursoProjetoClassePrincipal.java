@@ -3,6 +3,7 @@ package br.ufsc.inf.leb.projetos.recursos;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.Iterator;
 import java.util.List;
 
@@ -51,6 +52,7 @@ public class RecursoProjetoClassePrincipal {
 		File diretorioDosFontes = configuracoes.obterDiretorioDosFontesDoProjeto(nomeDoProjetoNoSistemaDeArquivos);
 		File diretorioDasBibliotecas = configuracoes.obterDiretorioDasBibliotecasDoProjeto(nomeDoProjetoNoSistemaDeArquivos);
 		File diretorioDeExecucao = configuracoes.obterDiretorioDeExecucaoDoProjeto(nomeDoProjetoNoSistemaDeArquivos);
+		File diretorioDasBibliotecasDeExecucao = configuracoes.obterDiretorioDasBibliotecasDeExecucaoDoProjeto(nomeDoProjetoNoSistemaDeArquivos);
 		File arquivoJar = configuracoes.obterArquivoJarDoProjeto(nomeDoProjetoNoSistemaDeArquivos);
 		manipuladorDeArquivos.remover(diretorioDosBinarios);
 		manipuladorDeArquivos.remover(diretorioDeExecucao);
@@ -68,11 +70,24 @@ public class RecursoProjetoClassePrincipal {
 				return Response.status(500).build();
 			}
 			criarClassePrincipalDoApplet(identificador, manipuladorDeArquivos, configuracoes, diretorioDosBinarios);
+			copiarBibliotecasParaExecucao(configuracoes, nomeDoProjetoNoSistemaDeArquivos, diretorioDasBibliotecas, diretorioDasBibliotecasDeExecucao);
 			atualizarProjeto(classePrincipal, bancoDeDocumentos, projetos);
 			return Response.status(200).build();
 		} catch (InterruptedException excecao) {
 			excecao.printStackTrace();
 			return Response.status(400).build();
+		}
+	}
+
+	private void copiarBibliotecasParaExecucao(ConfiguracoesProjetos configuracoes, String nomeDoProjetoNoSistemaDeArquivos, File diretorioDasBibliotecas, File diretorioDasBibliotecasDeExecucao) throws IOException {
+		diretorioDasBibliotecasDeExecucao.mkdirs();
+		if (diretorioDasBibliotecas.exists() && diretorioDasBibliotecas.isDirectory()) {
+			for (File arquivoDaBiblioteca : diretorioDasBibliotecas.listFiles()) {
+				if (arquivoDaBiblioteca.isFile()) {
+					File arquivoDaBibliotecaExecucao = configuracoes.obterArquivoDaBibliotecasDeExecucaoDoProjeto(nomeDoProjetoNoSistemaDeArquivos, arquivoDaBiblioteca.getName());
+					Files.copy(arquivoDaBiblioteca.toPath(), arquivoDaBibliotecaExecucao.toPath());
+				}
+			}
 		}
 	}
 
