@@ -51,9 +51,11 @@ public class RecursoProjetoExecucao {
 		String uriJarDoProjeto = configuracoes.obterArquivoJarDoProjeto(identificador).getName();
 		String urisDasBibliotecasJarDoProjeto = "";
 		File uriDasBibliotecas = configuracoes.obterDiretorioDasBibliotecasDeExecucaoDoProjeto(identificador);
-		for (File biblioteca : uriDasBibliotecas.listFiles()) {
-			urisDasBibliotecasJarDoProjeto = ", ";
-			urisDasBibliotecasJarDoProjeto += UriBuilder.fromPath(uriDasBibliotecas.getName()).path(biblioteca.getName()).build().getPath();
+		if (uriDasBibliotecas.exists() && uriDasBibliotecas.isDirectory()) {
+			for (File biblioteca : uriDasBibliotecas.listFiles()) {
+				urisDasBibliotecasJarDoProjeto = ", ";
+				urisDasBibliotecasJarDoProjeto += UriBuilder.fromPath(uriDasBibliotecas.getName()).path(biblioteca.getName()).build().getPath();
+			}
 		}
 		Long versaoDoProjeto = new Date().getTime();
 		String nomeDaClassePrincipal = projetos.get(0).obterClassePrincipal();
