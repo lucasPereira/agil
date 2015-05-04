@@ -53,7 +53,7 @@ public class RecursoProjetoExecucao {
 		File uriDasBibliotecas = configuracoes.obterDiretorioDasBibliotecasDeExecucaoDoProjeto(identificador);
 		if (uriDasBibliotecas.exists() && uriDasBibliotecas.isDirectory()) {
 			for (File biblioteca : uriDasBibliotecas.listFiles()) {
-				urisDasBibliotecasJarDoProjeto = ", ";
+				urisDasBibliotecasJarDoProjeto += ", ";
 				urisDasBibliotecasJarDoProjeto += UriBuilder.fromPath(uriDasBibliotecas.getName()).path(biblioteca.getName()).build().getPath();
 			}
 		}
