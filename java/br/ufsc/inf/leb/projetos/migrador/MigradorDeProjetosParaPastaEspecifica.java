@@ -32,9 +32,11 @@ public class MigradorDeProjetosParaPastaEspecifica {
 			File diretorioNovo = new File(diretorioRaiz, nomeAntigo);
 			projeto.fixarNome(nomeNovo);
 			bancoDeDocumentos.atualizarDocumento(projeto);
-			diretorioNovo.mkdirs();
-			System.out.println(String.format("Movendo %s para %s", diretorioAntigo.getPath(), diretorioNovo.getPath()));
-			Files.move(diretorioAntigo.toPath(), diretorioNovo.toPath(), StandardCopyOption.REPLACE_EXISTING);
+			if (diretorioAntigo.exists() && diretorioAntigo.isDirectory()) {
+				diretorioNovo.mkdirs();
+				Files.move(diretorioAntigo.toPath(), diretorioNovo.toPath(), StandardCopyOption.REPLACE_EXISTING);
+				System.out.println(String.format("Movendo %s para %s", diretorioAntigo.getPath(), diretorioNovo.getPath()));
+			}
 		}
 	}
 
