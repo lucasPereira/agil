@@ -59,12 +59,12 @@ public class ConfiguracoesProjetos {
 		return construirArquivo("arquivosTemporariosDosProjetos");
 	}
 
-	public File obterDiretorioDoDoProjeto(String nomeDoProjeto) {
+	public File obterDiretorioDoProjeto(String nomeDoProjeto) {
 		return new File(obterDiretorioDosProjetos(), nomeDoProjeto);
 	}
 
 	public File obterDiretorioDosArquivosDoProjeto(String nomeDoProjeto) {
-		File diretorioDoProjeto = obterDiretorioDoDoProjeto(nomeDoProjeto);
+		File diretorioDoProjeto = obterDiretorioDoProjeto(nomeDoProjeto);
 		return new File(diretorioDoProjeto, "arquivos");
 	}
 
@@ -73,11 +73,11 @@ public class ConfiguracoesProjetos {
 	}
 
 	public File obterDiretorioDosBinariosDoProjeto(String nomeDoProjeto) {
-		return new File(obterDiretorioDoDoProjeto(nomeDoProjeto), "bin");
+		return new File(obterDiretorioDoProjeto(nomeDoProjeto), "bin");
 	}
 
 	public File obterDiretorioDeExecucaoDoProjeto(String nomeDoProjeto) {
-		return new File(obterDiretorioDoDoProjeto(nomeDoProjeto), "execucao");
+		return new File(obterDiretorioDoProjeto(nomeDoProjeto), "execucao");
 	}
 
 	public File obterDiretorioDasBibliotecasDeExecucaoDoProjeto(String nomeDoProjeto) {
@@ -130,7 +130,7 @@ public class ConfiguracoesProjetos {
 	}
 
 	public File obterArquivoCompactadoDoProjeto(String nomeDoProjeto) {
-		File diretorioDoProjeto = obterDiretorioDoDoProjeto(nomeDoProjeto);
+		File diretorioDoProjeto = obterDiretorioDoProjeto(nomeDoProjeto);
 		return new File(diretorioDoProjeto, obterNomeDeArquivoZip(nomeDoProjeto));
 	}
 
