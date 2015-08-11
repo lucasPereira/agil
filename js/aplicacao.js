@@ -39,5 +39,16 @@
 		});
 
 	}]);
+	
+	projetosAplicacao.run(['$rootScope', '$route', function($rootScope, $route) {
+        $rootScope.$on('$locationChangeStart', function() {
+        	var projetos = /^#\/projetos\//;
+        	if (projetos.test(location.hash)) {
+        		$rootScope.pastaBase = location.hash.replace(projetos, "") + "/";
+        	} else {
+        		$rootScope.pastaBase = "";
+        	}
+        });
+	}]);
 
 }());

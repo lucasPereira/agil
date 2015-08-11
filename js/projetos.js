@@ -34,7 +34,7 @@
 					if (sequenciaDeDiretorios.length === 1) {
 						projeto.nomeDeExibicao = sequenciaDeDiretorios[0];
 						$scope.projetos.push(projeto);
-					} else if (sequenciaDeDiretorios.length === 2) {
+					} else if (sequenciaDeDiretorios.length > 1) {
 						nomeDoDiretorio = sequenciaDeDiretorios[0];
 						if ($scope.diretorios[nomeDoDiretorio] === undefined) {
 							$scope.diretorios[nomeDoDiretorio] = { nome: nomeDoDiretorio, nomeDeExibicao: nomeDoDiretorio, ultimaAtualizacao: projeto.ultimaAtualizacao };
@@ -49,7 +49,7 @@
 						if (sequenciaDeDiretorios.length === 1) {
 							projeto.nomeDeExibicao = sequenciaDeDiretorios[0];
 							$scope.projetos.push(projeto);
-						} else if (sequenciaDeDiretorios.length === 2) {
+						} else if (sequenciaDeDiretorios.length > 1) {
 							var nomeDoDiretorio = sequenciaDeDiretorios[0];
 							if ($scope.diretorios[nomeDoDiretorio] === undefined) {
 								$scope.diretorios[nomeDoDiretorio] = { nome: caminho + "/" + nomeDoDiretorio, nomeDeExibicao: nomeDoDiretorio, ultimaAtualizacao: projeto.ultimaAtualizacao };

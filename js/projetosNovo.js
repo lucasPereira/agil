@@ -1,8 +1,10 @@
 (function () {
 	'use strict';
 
-	angular.module('projetosAplicacao').controller('ProjetosNovoControle', function ($scope, $http, $location) {
-		$scope.projeto = {};
+	angular.module('projetosAplicacao').controller('ProjetosNovoControle', function ($rootScope, $scope, $http, $location) {
+		$scope.projeto = {
+			nome: $rootScope.pastaBase
+		};
 
 		$scope.criar = function () {
 			$scope.carregando = true;
@@ -19,7 +21,6 @@
 				$scope.sucesso = true;
 				$scope.projeto.uri = cabecalhos('location').replace("/projeto/", "/#/projeto/");
 				$scope.carregando = false;
-				//window.location = $scope.projeto.uri + '?importar';
 			});
 			requisicao.error(function (dados, estado, cabecalhos, configuracoes) {
 				if (estado === 409) {
