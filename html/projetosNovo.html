@@ -10,7 +10,7 @@
 	<div class="form-group" ng-class="{'has-error': projetoFormulario.$invalid && projetoFormulario.$dirty, 'has-success': !projetoFormulario.$invalid && projetoFormulario.$dirty}">
 		<label for="nome">Caminho</label>
 		<div class="input-group">
-			<div class="input-group-addon">/projetos/</div>
+			<div class="input-group-addon">/projetos/ano2015/semestre2/</div>
 			<input type="text" class="form-control" ng-model="projeto.nome" name="nome" placeholder="Nome" ng-pattern="/^[a-zA-Z0-9]([a-zA-Z0-9/])*[a-zA-Z0-9]$/" required />
 		</div>
 		<p class="help-block" ng-if="projetoFormulario.nome.$error.required">O nome deve ser preenchido.</p>
@@ -18,3 +18,4 @@
 	</div>
 	<button type="submit" class="btn btn-success" ng-disabled="projetoFormulario.$invalid || sucesso">Criar</button>
 </form>
+{{pastaBase}}

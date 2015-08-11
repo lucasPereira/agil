@@ -15,7 +15,7 @@
 			$scope.erroDeResposta = false;
 			var requisicao = $http({
 				method: 'PUT',
-				url: '/projeto/' + $scope.projeto.nome
+				url: '/projeto/ano2015/semestre2/' + $scope.projeto.nome
 			});
 			requisicao.success(function (dados, estado, cabecalhos, configuracoes) {
 				$scope.sucesso = true;

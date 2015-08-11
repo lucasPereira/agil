@@ -154,4 +154,8 @@ public class ConfiguracoesProjetos {
 		return nome.replaceAll("\\.", "/") + ".java";
 	}
 
+	public String obterExpressaoRegularParaValidacaoDoNomeDoProjeto() {
+		return "(ano2015/semestre2/)" + "[a-zA-Z0-9]([a-zA-Z0-9/])*[a-zA-Z0-9]";
+	}
+
 }

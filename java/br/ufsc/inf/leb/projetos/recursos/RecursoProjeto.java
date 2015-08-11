@@ -19,8 +19,6 @@ import br.ufsc.inf.leb.projetos.persistencia.RepositorioDeProjetos;
 @Path("/projeto/{identificador: .+}")
 public class RecursoProjeto {
 
-	private static final String ER_NOME = "[a-zA-Z0-9]([a-zA-Z0-9/])*[a-zA-Z0-9]";
-
 	@GET
 	@Produces("application/json")
 	public Response obter(@PathParam("identificador") String identificador) {
@@ -44,7 +42,7 @@ public class RecursoProjeto {
 		ConfiguracoesProjetos configuracoes = ambienteProjetos.obterConfiguracoes();
 		BancoDeDocumentos bancoDeDocumentos = ambienteProjetos.obterBancoDeDocumentos();
 		RepositorioDeProjetos repositorioDeProjetos = bancoDeDocumentos.obterRepositorioDeProjetos();
-		if (!identificador.matches(ER_NOME)) {
+		if (!identificador.matches(configuracoes.obterExpressaoRegularParaValidacaoDoNomeDoProjeto())) {
 			return Response.status(400).build();
 		}
 		if (existeDiretorioComNomeDeProjeto(identificador, repositorioDeProjetos)) {
@@ -74,4 +72,5 @@ public class RecursoProjeto {
 		}
 		return false;
 	}
+
 }

@@ -42,9 +42,11 @@
 	
 	projetosAplicacao.run(['$rootScope', '$route', function($rootScope, $route) {
         $rootScope.$on('$locationChangeStart', function() {
-        	var projetos = /^#\/projetos\//;
+        	var projetos = /^#\/projetos/;
+        	var anoAtual = /^#\/projetos\/ano2015/;
+        	var semestreAtual = /^#\/projetos\/ano2015\/semestre2/;
         	if (projetos.test(location.hash)) {
-        		$rootScope.pastaBase = location.hash.replace(projetos, "") + "/";
+        		$rootScope.pastaBase = location.hash.replace(semestreAtual, "").replace(anoAtual, "").replace(projetos, "").replace(/$/, "/").replace(/^\//, "");
         	} else {
         		$rootScope.pastaBase = "";
         	}
