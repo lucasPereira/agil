@@ -1,10 +1,13 @@
 <div class="page-header">
 	<h1>Ajuda</h1>
 </div>
+
 <ul>
 	<li><a href="/#/ajuda#importando">Importando um projeto para o ambiente</a></li>
-	<li><a href="/#/ajuda#exportando">Exportanto um projeto do Eclipse para um arquivo zip</a></li>
+	<li><a href="/#/ajuda#exportando">Exportando um projeto do Eclipse para um arquivo Zip</a></li>
+	<li><a href="/#/ajuda#imagens">Utilizando imagens ao executar pelo Applet</a></li>
 	<li><a href="/#/ajuda#problemaUtf8">Codificação UTF-8 (problema de compilação)</a></li>
+	<li><a href="/#/ajuda#problemaJUnit">Biblioteca JUnit não encontrada (problema de compilação)</a></li>
 	<li><a href="/#/ajuda#problemaBibliotecasFaltando">Bibliotecas faltando (problema de compilação)</a></li>
 	<li><a href="/#/ajuda#problemaJFrameSetDefaultCloseOperation">Fechar janelas do Swing (problema de execução)</a></li>
 	<li><a href="/#/ajuda#problemaMain">Classe sem o método <samp>main</samp> (problema de execução)</a></li>
@@ -19,7 +22,7 @@
 <p>Perceba que no diretório <samp>src</samp> apenas serão aceitos arquivos <samp>.java</samp> (arquivos diferente disso serão ignorados). De forma análoga, no diretório <samp>libs</samp> apenas serão aceitos arquivos <samp>.jar</samp>. Já no caso do diretório <samp>resources</samp> é possível enviar qualquer tipo de arquivo. Além dos arquivos mostrados na imagem acima, também serão considerados arquivos de configuração de algumas IDEs. As IDEs suportadas são Eclipse e NetBeans, mas caso você utilize alguma outra IDE, basta entrar em contato para que ela também seja suportada por este ambiente.</p>
 
 <div class="page-header">
-	<h2 id="exportando">Exportanto um projeto do Eclipse para um arquivo zip</h2>
+	<h2 id="exportando">Exportanto um projeto do Eclipse para um arquivo Zip</h2>
 </div>
 <ol>
 	<li>Vá no menu File > Export...</li>
@@ -30,6 +33,17 @@
 	<li>Clique em Finish.</li>
 </ol>
 <img src="png/exportarProjetoNoEclipse" alt="Estrutura de diretórios aceita na importação" />
+
+<div class="page-header">
+	<h2 id="imagens">Utilizando imagens ao executar pelo Applet</h2>
+</div>
+<p>Siga os seguintes passos para que possa utilizar imagens em seu programa de modo que essas imagens sejam exibidas através dos applets:</p>
+<ol>
+	<li>Crie um <samp>.jar</samp> contendo as imagens que você deseja utilizar (as imagens deverão estar dentro de um <strong>pacote</strong> qualquer).</li>
+	<li>Inclua o <samp>.jar</samp> na pasta <samp>libs</samp> do seu projeto.</li>
+	<li>Para obter o endereço da imagem e poder usá-la, faça: <code>getClass().getResource("/pacoteOndeEstaAImagem/imagem.jpg");</code>.</li>
+	<li><a href="http://agil.inf.ufsc.br/#/projeto/ano2015/semestre2/lucasPereira/umProjetoQueIncluiImagensDeUmJar">Projeto com exemplo de como fazer</a>.</li>
+</ol>
 
 <div class="page-header">
 	<h2 id="problemaUtf8">Codificação UTF-8 <small>problema de compilação</small></h2>
@@ -46,6 +60,11 @@
 	<li>Clique em Apply e depois em OK.</li>
 </ol>
 <img src="png/corrigirProblemaDeUtf8" alt="Corrigindo problema de condificação inválida no Eclipse" />
+
+<div class="page-header">
+	<h2 id="problemaJUnit">Biblioteca JUnit não encontrada <small>problema de compilação</small></h2>
+</div>
+<p>Ver item <a href="/#/ajuda#problemaBibliotecasFaltando">Bibliotecas faltando</a>.</p>
 
 <div class="page-header">
 	<h2 id="problemaBibliotecasFaltando">Bibliotecas faltando <small>problema de compilação</small></h2>
