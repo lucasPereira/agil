@@ -15,7 +15,7 @@ import br.ufsc.inf.leb.projetos.entidades.Nodo;
 public class ArvoreDoProjeto {
 
 	private static final Integer TAMANHO_MAXIMO_PARA_LETURA = 1024 * 1024;
-	private static final List<String> EXTENSOES_TEXTUAIS = Arrays.asList(".classpath", ".project", ".java", ".txt");
+	private static final List<String> EXTENSOES_TEXTUAIS = Arrays.asList(".classpath", ".project", ".java", ".txt", ".xml");
 
 	public Nodo construirArvore(String nomeDoProjeto) throws IOException {
 		ConfiguracoesProjetos configuracoesProjetos = new AmbienteProjetos().obterConfiguracoes();
