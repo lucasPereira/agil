@@ -31,6 +31,7 @@ public class MigradorDeProjetosParaPastaEspecifica {
 			File diretorioAntigo = configuracao.obterDiretorioDoProjeto(nomeAntigo);
 			File diretorioNovo = new File(diretorioRaiz, nomeAntigo);
 			projeto.fixarNome(nomeNovo);
+			System.out.println(String.format("Renomeando %s para %s", nomeAntigo, nomeNovo));
 			bancoDeDocumentos.atualizarDocumento(projeto);
 			if (diretorioAntigo.exists() && diretorioAntigo.isDirectory()) {
 				diretorioNovo.mkdirs();
