@@ -5,6 +5,7 @@
 <ul>
 	<li><a href="/#/ajuda#importando">Importando um projeto para o ambiente</a></li>
 	<li><a href="/#/ajuda#exportando">Exportando um projeto do Eclipse para um arquivo Zip</a></li>
+	<li><a href="/#/ajuda#arquivos">Lendo arquivos</a></li>
 	<li><a href="/#/ajuda#imagens">Utilizando imagens ao executar pelo Applet</a></li>
 	<li><a href="/#/ajuda#problemaUtf8">Codificação UTF-8 (problema de compilação)</a></li>
 	<li><a href="/#/ajuda#problemaJUnit">Biblioteca JUnit não encontrada (problema de compilação)</a></li>
@@ -33,6 +34,17 @@
 	<li>Clique em Finish.</li>
 </ol>
 <img src="png/exportarProjetoNoEclipse" alt="Estrutura de diretórios aceita na importação" />
+
+<div class="page-header">
+	<h2 id="arquivos">Lendo arquivos</h2>
+</div>
+<p>Não é possível realizar nem escrita e nem leitura de arquivos que estão no sistema de arquivos através de applets. Entretanto, é possível realizar a leitura de arquivos que estão dentro de um <samp>.jar</samp>. Para isso, siga os seguintes passos:</p>
+<ol>
+	<li>Crie um <samp>.jar</samp> contendo os arquivos que você deseja carregar durante a execução do seu programa.</li>
+	<li>Inclua o arquivo <samp>.jar</samp> na pasta <samp>libs</samp> do seu projeto.</li>
+	<li>Para obter o <i lang="en">input stream</i> do arquivo desejado, faça: <code>getClass().getResourceAsStream("/pacoteDentroDoJarOndeEstaOArquivo/arquivo.txt");</code>.</li>
+	<li><a href="http://agil.inf.ufsc.br/#/projeto/ano2015/semestre2/lucasPereira/projetoQueLeArquivosDeTextoDeUmJar">Projeto com exemplo de como fazer</a>.</li>
+</ol>
 
 <div class="page-header">
 	<h2 id="imagens">Utilizando imagens ao executar pelo Applet</h2>
@@ -69,7 +81,7 @@
 <div class="page-header">
 	<h2 id="problemaBibliotecasFaltando">Bibliotecas faltando <small>problema de compilação</small></h2>
 </div>
-<p>Para que seu projeto possa ser compilado é necessário incluir na pasta <samp>libs</samp>, na raiz do seu projeto, todas as bibliotecas do qual o seu projeto depende. Isso deverá ser feito também para as bibliotecas JUnit e Hamcrest. Perceba que algumas IDEs gerenciam essas bibliotecas automaticamente para você. Por isso, se você não incluir essas bibliotecas na pasta <samp>libs</samp>, o seu projeto não compilará através do ambiente (mesmo que esteja compilando localmente em seu computador). Você pode baixar as bibliotecas JUnit e Hamcrest <a href="http://agil.inf.ufsc.br/#/projeto/lucasPereira/interfaceGraficaComJunit/arquivo/libs">nesse projeto</a>.</p>
+<p>Para que seu projeto possa ser compilado é necessário incluir na pasta <samp>libs</samp>, na raiz do seu projeto, todas as bibliotecas do qual o seu projeto depende. Isso deverá ser feito também para as bibliotecas JUnit e Hamcrest. Perceba que algumas IDEs gerenciam essas bibliotecas automaticamente para você. Por isso, se você não incluir essas bibliotecas na pasta <samp>libs</samp>, o seu projeto não compilará através do ambiente (mesmo que esteja compilando localmente em seu computador). Você pode baixar as bibliotecas JUnit e Hamcrest <a href="http://agil.inf.ufsc.br/#/projeto/ano2015/semestre1/lucasPereira/interfaceGraficaComJunit/arquivo/libs">nesse projeto</a>.</p>
 <p>Não esqueça que os arquivos <samp>.jar</samp> com suas bibliotecas devem estar compilados e devem conter os arquivos <samp>.class</samp>. Caso você envie um arquivo <samp>.jar</samp> com arquivos <samp>.java</samp>, então a compilação no servidor não irá funcionar.</p>
 
 <div class="page-header">
