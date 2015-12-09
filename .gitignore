@@ -1,6 +1,6 @@
-arquivosDosProjetos
-arquivosTemporariosDosProjetos
-binarios
-construcao
-gradle/.gradle
-.settings
+arquivosDosProjetos/
+arquivosTemporariosDosProjetos/
+binarios/
+construcao/
+gradle/.gradle/
+.settings/
