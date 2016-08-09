@@ -13,7 +13,7 @@ do
 	sed -i -r s/semestre[0-9]+/semestre${semestre}/ ../html/projetosNovo.html
 	sed -i -r s/semestre[0-9]+/semestre${semestre}/ ../java/br/ufsc/inf/leb/agil/ConfiguracoesAgil.java
 	sed -i -r s/semestre[0-9]+/semestre${semestre}/ ../js/projetosNovo.js
-	git commit -m "Mudança para o ano ${ano} semestre ${semestre}."
+	git commit -am "Mudança para o ano ${ano} semestre ${semestre}."
 	git tag -a ${ano}.${semestre} -m "Ano ${ano}. Semestre ${semestre}."
 done
 
