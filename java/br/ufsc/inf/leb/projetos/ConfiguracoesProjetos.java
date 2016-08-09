@@ -155,7 +155,7 @@ public class ConfiguracoesProjetos {
 	}
 
 	public String obterExpressaoRegularParaValidacaoDoNomeDoProjeto() {
-		return "(ano2016/semestre1/)" + "[a-zA-Z0-9]([a-zA-Z0-9/])*[a-zA-Z0-9]";
+		return "(ano2016/semestre2/)" + "[a-zA-Z0-9]([a-zA-Z0-9/])*[a-zA-Z0-9]";
 	}
 
 }
