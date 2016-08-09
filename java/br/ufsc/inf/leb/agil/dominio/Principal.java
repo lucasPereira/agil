@@ -1,4 +1,4 @@
-package br.ufsc.inf.leb.projetos.dominio;
+package br.ufsc.inf.leb.agil.dominio;
 
 import java.applet.Applet;
 import java.lang.reflect.InvocationTargetException;

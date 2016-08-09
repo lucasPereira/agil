@@ -1,4 +1,4 @@
-package br.ufsc.inf.leb.projetos.recursos;
+package br.ufsc.inf.leb.agil.recursos;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,15 +17,15 @@ import net.lingala.zip4j.exception.ZipException;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
-import br.ufsc.inf.leb.projetos.AmbienteProjetos;
-import br.ufsc.inf.leb.projetos.dominio.ArquivosPermitidos;
-import br.ufsc.inf.leb.projetos.dominio.ArvoreDoProjeto;
-import br.ufsc.inf.leb.projetos.dominio.ExcecaoDeArquivoCompactadoNoFormatoInvalido;
-import br.ufsc.inf.leb.projetos.dominio.NomeadorDoProjetoNoSistemaDeArquivos;
-import br.ufsc.inf.leb.projetos.entidades.Nodo;
-import br.ufsc.inf.leb.projetos.entidades.Projeto;
-import br.ufsc.inf.leb.projetos.persistencia.BancoDeDocumentos;
-import br.ufsc.inf.leb.projetos.persistencia.RepositorioDeProjetos;
+import br.ufsc.inf.leb.agil.AmbienteAgil;
+import br.ufsc.inf.leb.agil.dominio.ArquivosPermitidos;
+import br.ufsc.inf.leb.agil.dominio.ArvoreDoProjeto;
+import br.ufsc.inf.leb.agil.dominio.ExcecaoDeArquivoCompactadoNoFormatoInvalido;
+import br.ufsc.inf.leb.agil.dominio.NomeadorDoProjetoNoSistemaDeArquivos;
+import br.ufsc.inf.leb.agil.entidades.Nodo;
+import br.ufsc.inf.leb.agil.entidades.Projeto;
+import br.ufsc.inf.leb.agil.persistencia.BancoDeDocumentos;
+import br.ufsc.inf.leb.agil.persistencia.RepositorioDeProjetos;
 
 @Path("/projeto/{identificador: .+}/arquivos")
 public class RecursoProjetoArquivos {
@@ -50,8 +50,8 @@ public class RecursoProjetoArquivos {
 	@Consumes("multipart/form-data")
 	@Produces("applicaion/json")
 	public Response colocar(@PathParam("identificador") String identificador, @FormDataParam("arquivos") InputStream arquivoCompactado, @FormDataParam("arquivos") FormDataContentDisposition metadadosDoArquivo) {
-		AmbienteProjetos ambienteProjetos = new AmbienteProjetos();
-		BancoDeDocumentos bancoDeDocumentos = ambienteProjetos.obterBancoDeDocumentos();
+		AmbienteAgil ambiente = new AmbienteAgil();
+		BancoDeDocumentos bancoDeDocumentos = ambiente.obterBancoDeDocumentos();
 		RepositorioDeProjetos repositorioDeProjetos = bancoDeDocumentos.obterRepositorioDeProjetos();
 		List<Projeto> projetos = repositorioDeProjetos.obterPorNome(identificador);
 		if (projetos.size() > 1) {

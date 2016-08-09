@@ -1,4 +1,4 @@
-package br.ufsc.inf.leb.projetos.migrador;
+package br.ufsc.inf.leb.agil.migrador;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,8 +7,8 @@ import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.List;
 
-import br.ufsc.inf.leb.projetos.AmbienteProjetos;
-import br.ufsc.inf.leb.projetos.ConfiguracoesProjetos;
+import br.ufsc.inf.leb.agil.AmbienteAgil;
+import br.ufsc.inf.leb.agil.ConfiguracoesAgil;
 
 public class MigradorRenomeadorDeArquivosZip {
 
@@ -17,8 +17,8 @@ public class MigradorRenomeadorDeArquivosZip {
 	}
 
 	private void migrar() throws IOException {
-		AmbienteProjetos ambienteProjetos = new AmbienteProjetos();
-		ConfiguracoesProjetos configuracao = ambienteProjetos.obterConfiguracoes();
+		AmbienteAgil ambiente = new AmbienteAgil();
+		ConfiguracoesAgil configuracao = ambiente.obterConfiguracoes();
 		File diretorioRaiz = new File(configuracao.obterDiretorioDosProjetos(), "ano2015/semestre1");
 		for (String arquivo : obterArquivos()) {
 			File arquivoZipAntigo = new File(diretorioRaiz, arquivo);

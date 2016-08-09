@@ -1,4 +1,4 @@
-package br.ufsc.inf.leb.projetos.persistencia.serializacao;
+package br.ufsc.inf.leb.agil.persistencia.serializacao;
 
 import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.Provider;

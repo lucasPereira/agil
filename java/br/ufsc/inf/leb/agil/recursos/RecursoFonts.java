@@ -1,4 +1,4 @@
-package br.ufsc.inf.leb.projetos.recursos;
+package br.ufsc.inf.leb.agil.recursos;
 
 import java.io.File;
 
@@ -7,7 +7,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 
-import br.ufsc.inf.leb.projetos.dominio.ManipuladorDeArquivos;
+import br.ufsc.inf.leb.agil.dominio.ManipuladorDeArquivos;
 
 @Path("/fonts/{identificador}")
 public class RecursoFonts {

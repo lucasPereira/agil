@@ -1,4 +1,4 @@
-package br.ufsc.inf.leb.projetos.persistencia;
+package br.ufsc.inf.leb.agil.persistencia;
 
 import org.ektorp.CouchDbConnector;
 import org.ektorp.CouchDbInstance;
@@ -6,19 +6,19 @@ import org.ektorp.http.HttpClient;
 import org.ektorp.http.StdHttpClient;
 import org.ektorp.impl.StdCouchDbInstance;
 
-import br.ufsc.inf.leb.projetos.ConfiguracoesProjetos;
-import br.ufsc.inf.leb.projetos.entidades.Documento;
-import br.ufsc.inf.leb.projetos.persistencia.serializacao.FabricaDeMapeadoresDoCouchDB;
+import br.ufsc.inf.leb.agil.ConfiguracoesAgil;
+import br.ufsc.inf.leb.agil.entidades.Documento;
+import br.ufsc.inf.leb.agil.persistencia.serializacao.FabricaDeMapeadoresDoCouchDB;
 
 public class BancoDeDocumentos {
 
 	private CouchDbInstance instanciaDoCouch;
 	private CouchDbConnector conexaoDoCouch;
 
-	public BancoDeDocumentos(ConfiguracoesProjetos configuracoesProjetos) {
+	public BancoDeDocumentos(ConfiguracoesAgil configuracoes) {
 		HttpClient clienteHttp = new StdHttpClient.Builder().build();
 		instanciaDoCouch = new StdCouchDbInstance(clienteHttp, new FabricaDeMapeadoresDoCouchDB());
-		conexaoDoCouch = instanciaDoCouch.createConnector(configuracoesProjetos.obterNomeDaBaseDeDocumentos(), true);
+		conexaoDoCouch = instanciaDoCouch.createConnector(configuracoes.obterNomeDaBaseDeDocumentos(), true);
 		System.setProperty("org.ektorp.support.AutoUpdateViewOnChange", "true");
 	}
 

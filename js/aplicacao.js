@@ -1,9 +1,9 @@
 (function () {
 	'use strict';
 
-	var projetosAplicacao = angular.module('projetosAplicacao', ['ngRoute']);
+	var agilAplicacao = angular.module('agilAplicacao', ['ngRoute']);
 
-	projetosAplicacao.config(['$routeProvider', function ($routeProvider) {
+	agilAplicacao.config(['$routeProvider', function ($routeProvider) {
 
 		$routeProvider.when("/", {
 			redirectTo: "/projetos"
@@ -40,7 +40,7 @@
 
 	}]);
 	
-	projetosAplicacao.run(['$rootScope', '$route', function($rootScope, $route) {
+	agilAplicacao.run(['$rootScope', '$route', function($rootScope, $route) {
         $rootScope.$on('$locationChangeStart', function() {
         	var projetos = /^#\/projetos/;
         	var anoAtual = /^#\/projetos\/ano20[0-9][0-9]/;

@@ -1,7 +1,7 @@
 (function () {
 	'use strict';
 
-	angular.module('projetosAplicacao').controller('ProjetoControle', function ($scope, $location, $http, $route) {
+	angular.module('agilAplicacao').controller('ProjetoControle', function ($scope, $location, $http, $route) {
 
 		function inicializarVariaveisProjeto() {
 			$scope.projetoSucesso = false;

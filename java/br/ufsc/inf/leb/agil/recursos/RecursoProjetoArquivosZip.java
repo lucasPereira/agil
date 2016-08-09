@@ -1,4 +1,4 @@
-package br.ufsc.inf.leb.projetos.recursos;
+package br.ufsc.inf.leb.agil.recursos;
 
 import java.io.File;
 
@@ -8,9 +8,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
-import br.ufsc.inf.leb.projetos.AmbienteProjetos;
-import br.ufsc.inf.leb.projetos.ConfiguracoesProjetos;
-import br.ufsc.inf.leb.projetos.dominio.NomeadorDoProjetoNoSistemaDeArquivos;
+import br.ufsc.inf.leb.agil.AmbienteAgil;
+import br.ufsc.inf.leb.agil.ConfiguracoesAgil;
+import br.ufsc.inf.leb.agil.dominio.NomeadorDoProjetoNoSistemaDeArquivos;
 
 @Path("/projeto/{identificador: .+}/arquivos.zip")
 public class RecursoProjetoArquivosZip {
@@ -18,8 +18,8 @@ public class RecursoProjetoArquivosZip {
 	@GET
 	@Produces("application/zip")
 	public Response obterZip(@PathParam("identificador") String identificador) {
-		AmbienteProjetos ambienteProjetos = new AmbienteProjetos();
-		ConfiguracoesProjetos configuracoes = ambienteProjetos.obterConfiguracoes();
+		AmbienteAgil ambiente = new AmbienteAgil();
+		ConfiguracoesAgil configuracoes = ambiente.obterConfiguracoes();
 		String nomeDoProjetoNoSistemaDeArquivos = new NomeadorDoProjetoNoSistemaDeArquivos().gerar(identificador);
 		File arquivoCompactadoDoProjeto = configuracoes.obterArquivoCompactadoDoProjeto(nomeDoProjetoNoSistemaDeArquivos );
 		if (!arquivoCompactadoDoProjeto.exists()) {

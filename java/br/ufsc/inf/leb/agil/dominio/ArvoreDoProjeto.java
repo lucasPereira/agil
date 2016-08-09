@@ -1,4 +1,4 @@
-package br.ufsc.inf.leb.projetos.dominio;
+package br.ufsc.inf.leb.agil.dominio;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,9 +8,9 @@ import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
 
-import br.ufsc.inf.leb.projetos.AmbienteProjetos;
-import br.ufsc.inf.leb.projetos.ConfiguracoesProjetos;
-import br.ufsc.inf.leb.projetos.entidades.Nodo;
+import br.ufsc.inf.leb.agil.AmbienteAgil;
+import br.ufsc.inf.leb.agil.ConfiguracoesAgil;
+import br.ufsc.inf.leb.agil.entidades.Nodo;
 
 public class ArvoreDoProjeto {
 
@@ -18,8 +18,8 @@ public class ArvoreDoProjeto {
 	private static final List<String> EXTENSOES_TEXTUAIS = Arrays.asList(".classpath", ".project", ".java", ".txt", ".xml");
 
 	public Nodo construirArvore(String nomeDoProjeto) throws IOException {
-		ConfiguracoesProjetos configuracoesProjetos = new AmbienteProjetos().obterConfiguracoes();
-		File diretorioDosArquivosDoProjeto = configuracoesProjetos.obterDiretorioDosArquivosDoProjeto(nomeDoProjeto);
+		ConfiguracoesAgil configuracoes = new AmbienteAgil().obterConfiguracoes();
+		File diretorioDosArquivosDoProjeto = configuracoes.obterDiretorioDosArquivosDoProjeto(nomeDoProjeto);
 		return construirArvore(diretorioDosArquivosDoProjeto, nomeDoProjeto);
 	}
 

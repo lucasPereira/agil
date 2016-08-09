@@ -1,19 +1,19 @@
-package br.ufsc.inf.leb.projetos;
+package br.ufsc.inf.leb.agil;
 
 import java.io.File;
 import java.net.URI;
 
 import javax.ws.rs.core.UriBuilder;
 
-import br.ufsc.inf.leb.projetos.dominio.Principal;
-import br.ufsc.inf.leb.projetos.restricoesDeInicializacao.AsseguradorDeRestricoesDeInicializacao;
-import br.ufsc.inf.leb.projetos.restricoesDeInicializacao.RestricaoDeDiretorioExistente;
-import br.ufsc.inf.leb.projetos.restricoesDeInicializacao.RestricaoDePermissaoDeEscrita;
-import br.ufsc.inf.leb.projetos.restricoesDeInicializacao.RestricaoDePermissaoDeLeitura;
+import br.ufsc.inf.leb.agil.dominio.Principal;
+import br.ufsc.inf.leb.agil.restricoesDeInicializacao.AsseguradorDeRestricoesDeInicializacao;
+import br.ufsc.inf.leb.agil.restricoesDeInicializacao.RestricaoDeDiretorioExistente;
+import br.ufsc.inf.leb.agil.restricoesDeInicializacao.RestricaoDePermissaoDeEscrita;
+import br.ufsc.inf.leb.agil.restricoesDeInicializacao.RestricaoDePermissaoDeLeitura;
 
-public class ConfiguracoesProjetos {
+public class ConfiguracoesAgil {
 
-	ConfiguracoesProjetos() {}
+	ConfiguracoesAgil() {}
 
 	public File obterPastaRaiz() {
 		return new File(".");

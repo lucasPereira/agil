@@ -1,4 +1,4 @@
-package br.ufsc.inf.leb.projetos.recursos;
+package br.ufsc.inf.leb.agil.recursos;
 
 import java.net.URI;
 import java.util.List;
@@ -10,11 +10,11 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
-import br.ufsc.inf.leb.projetos.AmbienteProjetos;
-import br.ufsc.inf.leb.projetos.ConfiguracoesProjetos;
-import br.ufsc.inf.leb.projetos.entidades.Projeto;
-import br.ufsc.inf.leb.projetos.persistencia.BancoDeDocumentos;
-import br.ufsc.inf.leb.projetos.persistencia.RepositorioDeProjetos;
+import br.ufsc.inf.leb.agil.AmbienteAgil;
+import br.ufsc.inf.leb.agil.ConfiguracoesAgil;
+import br.ufsc.inf.leb.agil.entidades.Projeto;
+import br.ufsc.inf.leb.agil.persistencia.BancoDeDocumentos;
+import br.ufsc.inf.leb.agil.persistencia.RepositorioDeProjetos;
 
 @Path("/projeto/{identificador: .+}")
 public class RecursoProjeto {
@@ -22,8 +22,8 @@ public class RecursoProjeto {
 	@GET
 	@Produces("application/json")
 	public Response obter(@PathParam("identificador") String identificador) {
-		AmbienteProjetos ambienteProjetos = new AmbienteProjetos();
-		BancoDeDocumentos bancoDeDocumentos = ambienteProjetos.obterBancoDeDocumentos();
+		AmbienteAgil ambiente = new AmbienteAgil();
+		BancoDeDocumentos bancoDeDocumentos = ambiente.obterBancoDeDocumentos();
 		RepositorioDeProjetos repositorioDeProjetos = bancoDeDocumentos.obterRepositorioDeProjetos();
 		List<Projeto> projetos = repositorioDeProjetos.obterPorNome(identificador);
 		if (projetos.size() > 1) {
@@ -38,9 +38,9 @@ public class RecursoProjeto {
 	@PUT
 	@Produces("application/json")
 	public Response colocar(@PathParam("identificador") String identificador) {
-		AmbienteProjetos ambienteProjetos = new AmbienteProjetos();
-		ConfiguracoesProjetos configuracoes = ambienteProjetos.obterConfiguracoes();
-		BancoDeDocumentos bancoDeDocumentos = ambienteProjetos.obterBancoDeDocumentos();
+		AmbienteAgil ambiente = new AmbienteAgil();
+		ConfiguracoesAgil configuracoes = ambiente.obterConfiguracoes();
+		BancoDeDocumentos bancoDeDocumentos = ambiente.obterBancoDeDocumentos();
 		RepositorioDeProjetos repositorioDeProjetos = bancoDeDocumentos.obterRepositorioDeProjetos();
 		if (!identificador.matches(configuracoes.obterExpressaoRegularParaValidacaoDoNomeDoProjeto())) {
 			return Response.status(400).build();

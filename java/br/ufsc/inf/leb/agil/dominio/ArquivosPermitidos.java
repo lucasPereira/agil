@@ -1,4 +1,4 @@
-package br.ufsc.inf.leb.projetos.dominio;
+package br.ufsc.inf.leb.agil.dominio;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import br.ufsc.inf.leb.agil.AmbienteAgil;
+import br.ufsc.inf.leb.agil.ConfiguracoesAgil;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.model.ZipParameters;
-import br.ufsc.inf.leb.projetos.AmbienteProjetos;
-import br.ufsc.inf.leb.projetos.ConfiguracoesProjetos;
 
 public class ArquivosPermitidos {
 
@@ -58,13 +58,13 @@ public class ArquivosPermitidos {
 	public void salvarArquivos(String nomeDoProjeto, InputStream fluxoDeDados) throws IOException, ExcecaoDeArquivoCompactadoNoFormatoInvalido, ZipException {
 		ManipuladorDeArquivos manipuladorDeArquivos = new ManipuladorDeArquivos();
 		GeradorDeNomesUnicos geradorDeNomesUnicos = new GeradorDeNomesUnicos();
-		AmbienteProjetos ambienteProjetos = new AmbienteProjetos();
-		ConfiguracoesProjetos configuracoesProjetos = ambienteProjetos.obterConfiguracoes();
+		AmbienteAgil ambiente = new AmbienteAgil();
+		ConfiguracoesAgil configuracoes = ambiente.obterConfiguracoes();
 		String nomeTemporarioDoProjeto = geradorDeNomesUnicos.gerar();
-		File diretorioDosArquivosDoProjeto = configuracoesProjetos.obterDiretorioDosArquivosDoProjeto(nomeDoProjeto);
-		File diretorioDosArquivosDoProjetoTemporario = configuracoesProjetos.obterDiretorioDosArquivosDoProjetoTemporario(nomeTemporarioDoProjeto);
-		File arquivoCompactadoDoProjeto = configuracoesProjetos.obterArquivoCompactadoDoProjeto(nomeDoProjeto);
-		File arquivoCompactadoDoProjetoTemporario = configuracoesProjetos.obterArquivoCompactadoDoProjetoTemporario(nomeTemporarioDoProjeto);
+		File diretorioDosArquivosDoProjeto = configuracoes.obterDiretorioDosArquivosDoProjeto(nomeDoProjeto);
+		File diretorioDosArquivosDoProjetoTemporario = configuracoes.obterDiretorioDosArquivosDoProjetoTemporario(nomeTemporarioDoProjeto);
+		File arquivoCompactadoDoProjeto = configuracoes.obterArquivoCompactadoDoProjeto(nomeDoProjeto);
+		File arquivoCompactadoDoProjetoTemporario = configuracoes.obterArquivoCompactadoDoProjetoTemporario(nomeTemporarioDoProjeto);
 		manipuladorDeArquivos.escreverArquivo(fluxoDeDados, arquivoCompactadoDoProjetoTemporario);
 		extrairArquivoCompactadoDoProjeto(diretorioDosArquivosDoProjetoTemporario, arquivoCompactadoDoProjetoTemporario);
 		File diretorioTemporarioDoProjetoRaiz = entrarNoPrimeiroDiretorio(diretorioDosArquivosDoProjetoTemporario);

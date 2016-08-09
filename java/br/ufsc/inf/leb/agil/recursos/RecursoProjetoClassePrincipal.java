@@ -1,4 +1,4 @@
-package br.ufsc.inf.leb.projetos.recursos;
+package br.ufsc.inf.leb.agil.recursos;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,17 +13,17 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 
+import br.ufsc.inf.leb.agil.AmbienteAgil;
+import br.ufsc.inf.leb.agil.ConfiguracoesAgil;
+import br.ufsc.inf.leb.agil.dominio.ExecutorDeComandos;
+import br.ufsc.inf.leb.agil.dominio.ManipuladorDeArquivos;
+import br.ufsc.inf.leb.agil.dominio.NomeadorDoProjetoNoSistemaDeArquivos;
+import br.ufsc.inf.leb.agil.dominio.Principal;
+import br.ufsc.inf.leb.agil.entidades.ClassePrincipal;
+import br.ufsc.inf.leb.agil.entidades.Projeto;
+import br.ufsc.inf.leb.agil.persistencia.BancoDeDocumentos;
+import br.ufsc.inf.leb.agil.persistencia.RepositorioDeProjetos;
 import jersey.repackaged.com.google.common.collect.Lists;
-import br.ufsc.inf.leb.projetos.AmbienteProjetos;
-import br.ufsc.inf.leb.projetos.ConfiguracoesProjetos;
-import br.ufsc.inf.leb.projetos.dominio.ExecutorDeComandos;
-import br.ufsc.inf.leb.projetos.dominio.ManipuladorDeArquivos;
-import br.ufsc.inf.leb.projetos.dominio.NomeadorDoProjetoNoSistemaDeArquivos;
-import br.ufsc.inf.leb.projetos.dominio.Principal;
-import br.ufsc.inf.leb.projetos.entidades.ClassePrincipal;
-import br.ufsc.inf.leb.projetos.entidades.Projeto;
-import br.ufsc.inf.leb.projetos.persistencia.BancoDeDocumentos;
-import br.ufsc.inf.leb.projetos.persistencia.RepositorioDeProjetos;
 
 @Path("/projeto/{identificador: .+}/classePrincipal")
 public class RecursoProjetoClassePrincipal {
@@ -31,8 +31,8 @@ public class RecursoProjetoClassePrincipal {
 	@PUT
 	@Consumes("application/json")
 	public Response obter(@PathParam("identificador") String identificador, ClassePrincipal classePrincipal) throws IOException {
-		AmbienteProjetos ambienteProjetos = new AmbienteProjetos();
-		BancoDeDocumentos bancoDeDocumentos = ambienteProjetos.obterBancoDeDocumentos();
+		AmbienteAgil ambiente = new AmbienteAgil();
+		BancoDeDocumentos bancoDeDocumentos = ambiente.obterBancoDeDocumentos();
 		RepositorioDeProjetos repositorioDeProjetos = bancoDeDocumentos.obterRepositorioDeProjetos();
 		List<Projeto> projetos = repositorioDeProjetos.obterPorNome(identificador);
 		if (projetos.size() > 1) {
@@ -41,7 +41,7 @@ public class RecursoProjetoClassePrincipal {
 		if (projetos.size() < 1) {
 			return Response.status(404).build();
 		}
-		ConfiguracoesProjetos configuracoes = ambienteProjetos.obterConfiguracoes();
+		ConfiguracoesAgil configuracoes = ambiente.obterConfiguracoes();
 		ManipuladorDeArquivos manipuladorDeArquivos = new ManipuladorDeArquivos();
 		String nomeDoProjetoNoSistemaDeArquivos = new NomeadorDoProjetoNoSistemaDeArquivos().gerar(identificador);
 		File arquivoFonteClassePrincipal = configuracoes.obterArquivoFonteDoProjeto(nomeDoProjetoNoSistemaDeArquivos, classePrincipal.obterCaminhoDaClasse());
@@ -79,7 +79,7 @@ public class RecursoProjetoClassePrincipal {
 		}
 	}
 
-	private void copiarBibliotecasParaExecucao(ConfiguracoesProjetos configuracoes, String nomeDoProjetoNoSistemaDeArquivos, File diretorioDasBibliotecas, File diretorioDasBibliotecasDeExecucao) throws IOException {
+	private void copiarBibliotecasParaExecucao(ConfiguracoesAgil configuracoes, String nomeDoProjetoNoSistemaDeArquivos, File diretorioDasBibliotecas, File diretorioDasBibliotecasDeExecucao) throws IOException {
 		diretorioDasBibliotecasDeExecucao.mkdirs();
 		if (diretorioDasBibliotecas.exists() && diretorioDasBibliotecas.isDirectory()) {
 			for (File arquivoDaBiblioteca : diretorioDasBibliotecas.listFiles()) {
@@ -91,7 +91,7 @@ public class RecursoProjetoClassePrincipal {
 		}
 	}
 
-	private StringBuilder obterNomesDosArquivosFontesSeparadosPorClasse(ConfiguracoesProjetos configuracoes, File diretorioDosFontes) {
+	private StringBuilder obterNomesDosArquivosFontesSeparadosPorClasse(ConfiguracoesAgil configuracoes, File diretorioDosFontes) {
 		StringBuilder nomeDosArquivosFontesSeparadosPorEspaco = new StringBuilder();
 		List<File> arquivosFontes = obterArquivosFontes(configuracoes, diretorioDosFontes);
 		Iterator<File> iterador = arquivosFontes.iterator();
@@ -104,7 +104,7 @@ public class RecursoProjetoClassePrincipal {
 		return nomeDosArquivosFontesSeparadosPorEspaco;
 	}
 
-	private List<File> obterArquivosFontes(ConfiguracoesProjetos configuracoes, File diretorioDosFontes) {
+	private List<File> obterArquivosFontes(ConfiguracoesAgil configuracoes, File diretorioDosFontes) {
 		List<File> arquivosFontes = Lists.newLinkedList();
 		for (File arquivoFonte : diretorioDosFontes.listFiles()) {
 			adicionarArquivosFontes(arquivosFontes, arquivoFonte);
@@ -128,7 +128,7 @@ public class RecursoProjetoClassePrincipal {
 		bancoDeDocumentos.atualizarDocumento(projeto);
 	}
 
-	private void criarClassePrincipalDoApplet(String nomeDoProjeto, ManipuladorDeArquivos manipuladorDeArquivos, ConfiguracoesProjetos configuracoes, File diretorioDosBinarios) throws IOException {
+	private void criarClassePrincipalDoApplet(String nomeDoProjeto, ManipuladorDeArquivos manipuladorDeArquivos, ConfiguracoesAgil configuracoes, File diretorioDosBinarios) throws IOException {
 		File diretorioDaClassePrincipalDoApplet = configuracoes.obterDireotrioDaClasseDoAppletDoProjeto(nomeDoProjeto);
 		File arquivoDaClassePrinciaplDoApplet = configuracoes.obterArquivoDaClasseDoAppletDoProjeto(nomeDoProjeto);
 		manipuladorDeArquivos.remover(diretorioDaClassePrincipalDoApplet);

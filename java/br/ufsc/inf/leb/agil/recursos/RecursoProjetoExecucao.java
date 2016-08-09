@@ -1,4 +1,4 @@
-package br.ufsc.inf.leb.projetos.recursos;
+package br.ufsc.inf.leb.agil.recursos;
 
 import java.io.File;
 import java.util.Date;
@@ -11,12 +11,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 
-import br.ufsc.inf.leb.projetos.AmbienteProjetos;
-import br.ufsc.inf.leb.projetos.ConfiguracoesProjetos;
-import br.ufsc.inf.leb.projetos.dominio.NomeadorDoProjetoNoSistemaDeArquivos;
-import br.ufsc.inf.leb.projetos.entidades.Projeto;
-import br.ufsc.inf.leb.projetos.persistencia.BancoDeDocumentos;
-import br.ufsc.inf.leb.projetos.persistencia.RepositorioDeProjetos;
+import br.ufsc.inf.leb.agil.AmbienteAgil;
+import br.ufsc.inf.leb.agil.ConfiguracoesAgil;
+import br.ufsc.inf.leb.agil.dominio.NomeadorDoProjetoNoSistemaDeArquivos;
+import br.ufsc.inf.leb.agil.entidades.Projeto;
+import br.ufsc.inf.leb.agil.persistencia.BancoDeDocumentos;
+import br.ufsc.inf.leb.agil.persistencia.RepositorioDeProjetos;
 
 @Path("/projeto/{identificador: .+}/execucao")
 public class RecursoProjetoExecucao {
@@ -24,7 +24,7 @@ public class RecursoProjetoExecucao {
 	@GET
 	@Path("{arquivo: .+}")
 	public Response obterArquivo(@PathParam("identificador") String identificador, @PathParam("arquivo") String arquivo) {
-		ConfiguracoesProjetos configuracoesProjeto = new AmbienteProjetos().obterConfiguracoes();
+		ConfiguracoesAgil configuracoesProjeto = new AmbienteAgil().obterConfiguracoes();
 		String nomeDoProjetoNoSistemaDeArquivos = new NomeadorDoProjetoNoSistemaDeArquivos().gerar(identificador);
 		File arquivoSolicitado = configuracoesProjeto.obterArquivoDeExecucaoDoProjeto(nomeDoProjetoNoSistemaDeArquivos, arquivo);
 		if (!arquivoSolicitado.exists()) {
@@ -36,8 +36,8 @@ public class RecursoProjetoExecucao {
 	@GET
 	@Produces("text/html")
 	public Response obter(@PathParam("identificador") String identificador) {
-		AmbienteProjetos ambienteProjetos = new AmbienteProjetos();
-		BancoDeDocumentos bancoDeDocumentos = ambienteProjetos.obterBancoDeDocumentos();
+		AmbienteAgil ambiente = new AmbienteAgil();
+		BancoDeDocumentos bancoDeDocumentos = ambiente.obterBancoDeDocumentos();
 		RepositorioDeProjetos repositorioDeProjetos = bancoDeDocumentos.obterRepositorioDeProjetos();
 		List<Projeto> projetos = repositorioDeProjetos.obterPorNome(identificador);
 		if (projetos.size() > 1) {
@@ -46,8 +46,8 @@ public class RecursoProjetoExecucao {
 		if (projetos.size() < 1) {
 			return Response.status(404).build();
 		}
-		ConfiguracoesProjetos configuracoes = ambienteProjetos.obterConfiguracoes();
-		String uriDeExecucao = ambienteProjetos.obterConfiguracoes().coonstruirUri(RecursoProjetoExecucao.class, identificador).toASCIIString();
+		ConfiguracoesAgil configuracoes = ambiente.obterConfiguracoes();
+		String uriDeExecucao = ambiente.obterConfiguracoes().coonstruirUri(RecursoProjetoExecucao.class, identificador).toASCIIString();
 		String uriJarDoProjeto = configuracoes.obterArquivoJarDoProjeto(identificador).getName();
 		String urisDasBibliotecasJarDoProjeto = "";
 		File uriDasBibliotecas = configuracoes.obterDiretorioDasBibliotecasDeExecucaoDoProjeto(identificador);
@@ -81,7 +81,7 @@ public class RecursoProjetoExecucao {
 		html.append("\n");
 		html.append(String.format("archive=\"%s?versao=%d%s\"", uriJarDoProjeto, versaoDoProjeto, urisDasBibliotecasJarDoProjeto));
 		html.append("\n");
-		html.append("code=\"br.ufsc.inf.leb.projetos.dominio.Principal.class\"");
+		html.append("code=\"br.ufsc.inf.leb.agil.dominio.Principal.class\"");
 		html.append("\n");
 		html.append(String.format("><param name=\"classePrincipal\" value=\"%s\" /></applet>", nomeDaClassePrincipal));
 		html.append("\n");

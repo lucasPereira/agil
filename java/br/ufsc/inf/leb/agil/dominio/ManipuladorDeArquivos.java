@@ -1,18 +1,18 @@
-package br.ufsc.inf.leb.projetos.dominio;
+package br.ufsc.inf.leb.agil.dominio;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 
-import br.ufsc.inf.leb.projetos.AmbienteProjetos;
+import br.ufsc.inf.leb.agil.AmbienteAgil;
 
 public class ManipuladorDeArquivos {
 
 	private static final Integer BUFFER = 1024;
 
 	public File carregarArquivo(String pasta, String nome) {
-		File pastaRaiz = new AmbienteProjetos().obterConfiguracoes().obterPastaRaiz();
+		File pastaRaiz = new AmbienteAgil().obterConfiguracoes().obterPastaRaiz();
 		File pastaAtual = new File(pastaRaiz, pasta);
 		File arquivo = new File(pastaAtual, nome);
 		return arquivo;

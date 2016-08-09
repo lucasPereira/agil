@@ -1,4 +1,4 @@
-package br.ufsc.inf.leb.projetos.persistencia;
+package br.ufsc.inf.leb.agil.persistencia;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import org.ektorp.CouchDbConnector;
 import org.ektorp.support.View;
 import org.ektorp.support.Views;
 
-import br.ufsc.inf.leb.projetos.entidades.Projeto;
+import br.ufsc.inf.leb.agil.entidades.Projeto;
 
 @Views({
 		@View(name = "porIdentificador", map = "function (documento) { if (documento.tipo === 'projeto') { emit(documento._id, documento); } }"),

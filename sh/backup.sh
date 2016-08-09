@@ -1,4 +1,4 @@
 #!/bin/bash
 
-nome="projetos_`date +'%Y-%M-%d'`"
+nome="agil_`date +'%Y-%M-%d'`"
 cp -R ../. ../../backups/${nome}

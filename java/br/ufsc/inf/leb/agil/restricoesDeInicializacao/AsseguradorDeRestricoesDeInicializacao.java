@@ -1,4 +1,4 @@
-package br.ufsc.inf.leb.projetos.restricoesDeInicializacao;
+package br.ufsc.inf.leb.agil.restricoesDeInicializacao;
 
 import java.util.LinkedList;
 import java.util.List;

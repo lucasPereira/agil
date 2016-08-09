@@ -1,9 +1,9 @@
-package br.ufsc.inf.leb.projetos.persistencia;
+package br.ufsc.inf.leb.agil.persistencia;
 
 import org.ektorp.CouchDbConnector;
 import org.ektorp.support.CouchDbRepositorySupport;
 
-import br.ufsc.inf.leb.projetos.entidades.Documento;
+import br.ufsc.inf.leb.agil.entidades.Documento;
 
 public class Repositorio<T extends Documento> extends CouchDbRepositorySupport<T> {
 

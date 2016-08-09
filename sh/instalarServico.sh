@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo update-rc.d projetos disable
-sudo rm -r /etc/init.d/projetos
-sudo cp servicoProjetos.sh /etc/init.d/projetos
-sudo update-rc.d projetos defaults
+sudo update-rc.d agil disable
+sudo rm -r /etc/init.d/agil
+sudo cp servicoAgil.sh /etc/init.d/agil
+sudo update-rc.d agil defaults

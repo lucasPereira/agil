@@ -1,15 +1,15 @@
-package br.ufsc.inf.leb.projetos;
+package br.ufsc.inf.leb.agil;
 
-import br.ufsc.inf.leb.projetos.persistencia.BancoDeDocumentos;
+import br.ufsc.inf.leb.agil.persistencia.BancoDeDocumentos;
 
-public class AmbienteProjetos {
+public class AmbienteAgil {
 
 	public BancoDeDocumentos obterBancoDeDocumentos() {
 		return new BancoDeDocumentos(obterConfiguracoes());
 	}
 
-	public ConfiguracoesProjetos obterConfiguracoes() {
-		return new ConfiguracoesProjetos();
+	public ConfiguracoesAgil obterConfiguracoes() {
+		return new ConfiguracoesAgil();
 	}
 
 }

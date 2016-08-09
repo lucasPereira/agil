@@ -1,4 +1,4 @@
-package br.ufsc.inf.leb.projetos.dominio;
+package br.ufsc.inf.leb.agil.dominio;
 
 public class NomeadorDoProjetoNoSistemaDeArquivos {
 

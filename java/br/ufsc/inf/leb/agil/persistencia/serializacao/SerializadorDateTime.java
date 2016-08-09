@@ -1,4 +1,4 @@
-package br.ufsc.inf.leb.projetos.persistencia.serializacao;
+package br.ufsc.inf.leb.agil.persistencia.serializacao;
 
 import java.io.IOException;
 

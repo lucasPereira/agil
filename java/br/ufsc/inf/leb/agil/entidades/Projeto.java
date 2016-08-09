@@ -1,4 +1,4 @@
-package br.ufsc.inf.leb.projetos.entidades;
+package br.ufsc.inf.leb.agil.entidades;
 
 import org.joda.time.DateTime;
 

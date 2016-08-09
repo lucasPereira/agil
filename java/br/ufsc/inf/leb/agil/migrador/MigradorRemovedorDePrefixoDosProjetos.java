@@ -1,12 +1,12 @@
-package br.ufsc.inf.leb.projetos.migrador;
+package br.ufsc.inf.leb.agil.migrador;
 
 import java.io.IOException;
 import java.util.List;
 
-import br.ufsc.inf.leb.projetos.AmbienteProjetos;
-import br.ufsc.inf.leb.projetos.entidades.Projeto;
-import br.ufsc.inf.leb.projetos.persistencia.BancoDeDocumentos;
-import br.ufsc.inf.leb.projetos.persistencia.RepositorioDeProjetos;
+import br.ufsc.inf.leb.agil.AmbienteAgil;
+import br.ufsc.inf.leb.agil.entidades.Projeto;
+import br.ufsc.inf.leb.agil.persistencia.BancoDeDocumentos;
+import br.ufsc.inf.leb.agil.persistencia.RepositorioDeProjetos;
 
 public class MigradorRemovedorDePrefixoDosProjetos {
 
@@ -15,8 +15,8 @@ public class MigradorRemovedorDePrefixoDosProjetos {
 	}
 
 	private void migrar() throws IOException {
-		AmbienteProjetos ambienteProjetos = new AmbienteProjetos();
-		BancoDeDocumentos bancoDeDocumentos = ambienteProjetos.obterBancoDeDocumentos();
+		AmbienteAgil ambiente = new AmbienteAgil();
+		BancoDeDocumentos bancoDeDocumentos = ambiente.obterBancoDeDocumentos();
 		RepositorioDeProjetos repositorioDeProjetos = bancoDeDocumentos.obterRepositorioDeProjetos();
 		List<Projeto> projetos = repositorioDeProjetos.obterPorIdentificador();
 		for (Projeto projeto : projetos) {

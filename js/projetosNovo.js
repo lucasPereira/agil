@@ -1,7 +1,7 @@
 (function () {
 	'use strict';
 
-	angular.module('projetosAplicacao').controller('ProjetosNovoControle', function ($rootScope, $scope, $http, $location) {
+	angular.module('agilAplicacao').controller('ProjetosNovoControle', function ($rootScope, $scope, $http, $location) {
 		$scope.projeto = {
 			nome: $rootScope.pastaBase
 		};

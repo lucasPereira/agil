@@ -1,21 +1,21 @@
-package br.ufsc.inf.leb.projetos;
+package br.ufsc.inf.leb.agil;
 
 import java.net.URI;
 
 import org.glassfish.jersey.jetty.JettyHttpContainerFactory;
 
-import br.ufsc.inf.leb.projetos.restricoesDeInicializacao.AsseguradorDeRestricoesDeInicializacao;
+import br.ufsc.inf.leb.agil.restricoesDeInicializacao.AsseguradorDeRestricoesDeInicializacao;
 
-public class ServidorProjetos {
+public class ServidorAgil {
 
 	public static void main(String[] argumentos) {
-		AmbienteProjetos ambienteProjetos = new AmbienteProjetos();
-		ConfiguracoesProjetos configuracoesProjetos = ambienteProjetos.obterConfiguracoes();
-		URI uriBase = configuracoesProjetos.obterUriBase();
-		AsseguradorDeRestricoesDeInicializacao assegurador = configuracoesProjetos.construirAsseguradorRestricoesDeInicializacao();
+		AmbienteAgil ambiente = new AmbienteAgil();
+		ConfiguracoesAgil configuracoes = ambiente.obterConfiguracoes();
+		URI uriBase = configuracoes.obterUriBase();
+		AsseguradorDeRestricoesDeInicializacao assegurador = configuracoes.construirAsseguradorRestricoesDeInicializacao();
 		assegurador.garantir();
-		AplicacaoProjetos aplicacaoProjetos = new AplicacaoProjetos();
-		JettyHttpContainerFactory.createServer(uriBase, aplicacaoProjetos);
+		AplicacaoAgil aplicacao = new AplicacaoAgil();
+		JettyHttpContainerFactory.createServer(uriBase, aplicacao);
 	}
 
 }

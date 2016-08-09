@@ -2,4 +2,4 @@
 
 cd $1
 bibliotecas=`find $1/jar -name "*.jar" | paste -s -d ":"`
-java -classpath $bibliotecas:$1/binarios br.ufsc.inf.leb.projetos.ServidorProjetos
+java -classpath $bibliotecas:$1/binarios br.ufsc.inf.leb.agil.ServidorAgil

@@ -1,7 +1,7 @@
 (function () {
 	'use strict';
 
-	angular.module('projetosAplicacao').controller('ProjetosControle', function ($scope, $http, $route, $location) {
+	angular.module('agilAplicacao').controller('ProjetosControle', function ($scope, $http, $route, $location) {
 		$scope.voltar = function () {
 			var caminho =  $route.current.params.caminho;
 			caminho = caminho.split("/");

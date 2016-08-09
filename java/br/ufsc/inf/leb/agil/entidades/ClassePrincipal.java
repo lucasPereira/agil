@@ -1,8 +1,8 @@
-package br.ufsc.inf.leb.projetos.entidades;
-
-import br.ufsc.inf.leb.projetos.AmbienteProjetos;
+package br.ufsc.inf.leb.agil.entidades;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import br.ufsc.inf.leb.agil.AmbienteAgil;
 
 public class ClassePrincipal {
 
@@ -21,7 +21,7 @@ public class ClassePrincipal {
 	}
 
 	public String obterCaminhoDaClasse() {
-		return new AmbienteProjetos().obterConfiguracoes().obterCaminhoDoArquivoFonteRealitivoAoDiretorioDosFontes(nome);
+		return new AmbienteAgil().obterConfiguracoes().obterCaminhoDoArquivoFonteRealitivoAoDiretorioDosFontes(nome);
 	}
 
 }
