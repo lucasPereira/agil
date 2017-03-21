@@ -155,7 +155,7 @@ public class ConfiguracoesAgil {
 	}
 
 	public String obterExpressaoRegularParaValidacaoDoNomeDoProjeto() {
-		return "(ano2016/semestre2/)" + "[a-zA-Z0-9]([a-zA-Z0-9/])*[a-zA-Z0-9]";
+		return "(ano2017/semestre1/)" + "[a-zA-Z0-9]([a-zA-Z0-9/])*[a-zA-Z0-9]";
 	}
 
 }
